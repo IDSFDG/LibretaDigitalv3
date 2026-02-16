@@ -57658,6 +57658,8 @@ rtl.module("uEditor",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics"
       this.WebButton3 = null;
       this.WebButton2 = null;
       this.btnfocus = null;
+      this.divcontainer = null;
+      this.divheader = null;
       this.divSunEditor = null;
       this.cmeditor = undefined;
       this.suneditor = undefined;
@@ -57668,11 +57670,14 @@ rtl.module("uEditor",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics"
       this.WebButton3 = undefined;
       this.WebButton2 = undefined;
       this.btnfocus = undefined;
+      this.divcontainer = undefined;
+      this.divheader = undefined;
       this.divSunEditor = undefined;
       pas["WEBLib.Forms"].TForm.$final.call(this);
     };
     this.WebFormCreate = function (Sender) {
       var varsuneditor = undefined;
+      this.divcontainer.SetElementClassName("responsive-div");
       // Function to hide the toolbar
            function hideToolbar() {
              //const editor = editorInstance;
@@ -57879,7 +57884,6 @@ rtl.module("uEditor",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics"
           });
       
       
-      
           // INICIO No Crear divCodeMirror    **********************************
          if (1==0) {
       
@@ -58009,6 +58013,31 @@ rtl.module("uEditor",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics"
       console.log('frmwidth',frmwidth);
       this.WebPanelBottom.SetWidth(frmwidth);
       this.SetHeight(450);
+      function moveSunEditorToTop() {
+          // Get the element you want to move
+          var editorDiv = document.getElementById("divSunEditor");
+      
+          // Check if the element exists
+          if (editorDiv) {
+              // Set the position property to 'absolute' or 'fixed'
+              // 'fixed' positions it relative to the browser viewport
+              // 'absolute' positions it relative to its nearest positioned ancestor
+              editorDiv.style.position = "fixed";
+      
+              // Set the top position to '0px' to move it to the very top
+              editorDiv.style.top = "0px";
+      
+              // Optionally, you might also want to set other properties like left/right
+              // to control horizontal positioning and width.
+              editorDiv.style.left = "0px";
+              editorDiv.style.right = "0px";
+              editorDiv.style.top = "100px";
+              editorDiv.style.zIndex = "1000"; // Ensure it's above other content
+          } else {
+              console.error("SunEditor container div not found!");
+          }
+      };
+      moveSunEditorToTop();
       return;
       this.WebPanelBottom.SetElementPosition(pas["WEBLib.Controls"].TElementPosition.epIgnore);
       this.WebPanelBottom.SetWidth(frmwidth);
@@ -58022,12 +58051,16 @@ rtl.module("uEditor",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics"
       this.WebButton3 = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
       this.WebButton2 = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
       this.btnfocus = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
+      this.divcontainer = pas["WEBLib.WebCtrls"].THTMLDiv.$create("Create$1",[this]);
+      this.divheader = pas["WEBLib.WebCtrls"].THTMLDiv.$create("Create$1",[this]);
       this.divSunEditor = pas["WEBLib.WebCtrls"].THTMLDiv.$create("Create$2",["divSunEditor"]);
       this.WebButton1.BeforeLoadDFMValues();
       this.WebPanelBottom.BeforeLoadDFMValues();
       this.WebButton3.BeforeLoadDFMValues();
       this.WebButton2.BeforeLoadDFMValues();
       this.btnfocus.BeforeLoadDFMValues();
+      this.divcontainer.BeforeLoadDFMValues();
+      this.divheader.BeforeLoadDFMValues();
       this.divSunEditor.BeforeLoadDFMValues();
       try {
         this.SetName("frmEditor");
@@ -58121,12 +58154,34 @@ rtl.module("uEditor",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics"
         this.btnfocus.SetVisible(false);
         this.btnfocus.SetWidthPercent(100.000000000000000000);
         this.SetEvent$1(this.btnfocus,this,"OnClick","btnfocusClick");
-        this.divSunEditor.SetParentComponent(this);
+        this.divcontainer.SetParentComponent(this);
+        this.divcontainer.SetName("divcontainer");
+        this.divcontainer.SetLeft(8);
+        this.divcontainer.SetTop(40);
+        this.divcontainer.SetWidth(561);
+        this.divcontainer.SetHeight(289);
+        this.divcontainer.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
+        this.divcontainer.SetWidthStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
+        this.divcontainer.SetChildOrderEx(3);
+        this.divcontainer.SetElementPosition(pas["WEBLib.Controls"].TElementPosition.epIgnore);
+        this.divcontainer.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.divcontainer.SetRole("");
+        this.divheader.SetParentComponent(this.divcontainer);
+        this.divheader.SetName("divheader");
+        this.divheader.SetLeft(0);
+        this.divheader.SetTop(0);
+        this.divheader.SetWidth(561);
+        this.divheader.SetHeight(57);
+        this.divheader.SetElementPosition(pas["WEBLib.Controls"].TElementPosition.epIgnore);
+        this.divheader.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.divheader.SetRole("");
+        this.divSunEditor.SetParentComponent(this.divcontainer);
         this.divSunEditor.SetName("divSunEditor");
-        this.divSunEditor.SetLeft(8);
+        this.divSunEditor.SetLeft(-23);
         this.divSunEditor.SetTop(71);
         this.divSunEditor.SetWidth(584);
         this.divSunEditor.SetHeight(192);
+        this.divSunEditor.SetWidthStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.divSunEditor.SetChildOrderEx(1);
         this.divSunEditor.SetElementPosition(pas["WEBLib.Controls"].TElementPosition.epIgnore);
         this.divSunEditor.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
@@ -58137,6 +58192,8 @@ rtl.module("uEditor",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics"
         this.WebButton3.AfterLoadDFMValues();
         this.WebButton2.AfterLoadDFMValues();
         this.btnfocus.AfterLoadDFMValues();
+        this.divcontainer.AfterLoadDFMValues();
+        this.divheader.AfterLoadDFMValues();
         this.divSunEditor.AfterLoadDFMValues();
       };
     };
@@ -58148,6 +58205,8 @@ rtl.module("uEditor",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics"
     $r.addField("WebButton3",pas["WEBLib.StdCtrls"].$rtti["TButton"]);
     $r.addField("WebButton2",pas["WEBLib.StdCtrls"].$rtti["TButton"]);
     $r.addField("btnfocus",pas["WEBLib.StdCtrls"].$rtti["TButton"]);
+    $r.addField("divcontainer",pas["WEBLib.WebCtrls"].$rtti["THTMLDiv"]);
+    $r.addField("divheader",pas["WEBLib.WebCtrls"].$rtti["THTMLDiv"]);
     $r.addField("divSunEditor",pas["WEBLib.WebCtrls"].$rtti["THTMLDiv"]);
     $r.addMethod("WebFormCreate",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("btnCodeMirrorBoldClick",0,[["Sender",pas.System.$rtti["TObject"]]]);
@@ -67756,6 +67815,7 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
         this.panelForma.SetChildOrderEx(4);
         this.panelForma.SetElementPosition(pas["WEBLib.Controls"].TElementPosition.epIgnore);
         this.panelForma.SetTabOrder(1);
+        this.panelForma.SetVisible(false);
       } finally {
         this.WebLabel1.AfterLoadDFMValues();
         this.MainMenu.AfterLoadDFMValues();
