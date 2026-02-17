@@ -67159,10 +67159,10 @@ rtl.module("uRichEditor2",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
     this.WebFormCreate = function (Sender) {
       this.WebRichEditToolBar1.SetVisibleButtons(rtl.createSet(pas["WEBLib.Buttons"].TRichEditBtn.reFont,pas["WEBLib.Buttons"].TRichEditBtn.reFontSize,pas["WEBLib.Buttons"].TRichEditBtn.reBold,pas["WEBLib.Buttons"].TRichEditBtn.reItalic,pas["WEBLib.Buttons"].TRichEditBtn.reUnderline,pas["WEBLib.Buttons"].TRichEditBtn.reStrikeThrough,pas["WEBLib.Buttons"].TRichEditBtn.reAlignLeft,pas["WEBLib.Buttons"].TRichEditBtn.reAlignCenter,pas["WEBLib.Buttons"].TRichEditBtn.reAlignRight,pas["WEBLib.Buttons"].TRichEditBtn.reUnorderedList,pas["WEBLib.Buttons"].TRichEditBtn.reOrderedList,pas["WEBLib.Buttons"].TRichEditBtn.reForegroundColor,pas["WEBLib.Buttons"].TRichEditBtn.reBackgroundColor,pas["WEBLib.Buttons"].TRichEditBtn.reHyperlink,pas["WEBLib.Buttons"].TRichEditBtn.reImageInsert,pas["WEBLib.Buttons"].TRichEditBtn.reLineSpacing));
       this.WebRichEditToolBar1.SetVisibleButtons(rtl.createSet(pas["WEBLib.Buttons"].TRichEditBtn.reFont,pas["WEBLib.Buttons"].TRichEditBtn.reFontSize,pas["WEBLib.Buttons"].TRichEditBtn.reBold,pas["WEBLib.Buttons"].TRichEditBtn.reItalic,pas["WEBLib.Buttons"].TRichEditBtn.reUnderline,pas["WEBLib.Buttons"].TRichEditBtn.reForegroundColor,pas["WEBLib.Buttons"].TRichEditBtn.reBackgroundColor,pas["WEBLib.Buttons"].TRichEditBtn.reImageInsert));
-      this.webBotonMenu.SetElementClassName("btn btn-lg");
       this.webBotonMenu.SetCaption("" + "☰");
       this.webBotonMenu.SetCaption("" + "⋮");
       this.lbmenu.SetCaption("" + "⋮");
+      this.webBotonMenu.SetElementClassName("btn btn-lg bg-dark text-white");
     };
     this.webBotonMenuClick = function (Sender) {
       this.WebPopupMenu1.Popup(this.webBotonMenu.GetLeft() - 180,this.webBotonMenu.GetTop() + this.webBotonMenu.GetHeight());
@@ -67788,9 +67788,9 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
           }
       
              });
-      this.webBotonMenu.SetElementClassName("btn btn-lg");
       this.webBotonMenu.SetCaption("" + "☰");
       this.webBotonMenu.SetCaption("" + "⋮");
+      this.webBotonMenu.SetElementClassName("btn btn-lg bg-dark text-white");
     };
     this.panelTabulatorTitClick = function (Sender) {
       pas["WEBLib.Dialogs"].ShowMessage("Hoja Tabular");
@@ -68219,6 +68219,7 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
       it.SetHint(it.FText);
       it.SetMaterialGlyph("upload");
       it.SetMaterialGlyphType(pas["WEBLib.Controls"].TMaterialGlyphType.mgOutlined);
+      it.SetMaterialGlyph("open_in_browser");
       this.MainMenu.SetSelectedItem(0);
       this.MainMenu.EndUpdate();
     };
@@ -68267,11 +68268,12 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
         this.MainMenu.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.MainMenu.SetWidthStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.MainMenu.SetChildOrderEx(1);
-        this.MainMenu.SetColor(15790320);
+        this.MainMenu.SetColor(0);
         this.MainMenu.FItems.Clear();
         var $with = this.MainMenu.FItems.Add$1();
         $with.SetText("Item 1");
         $with.SetType(pas["WEBLib.SideMenu"].TSideMenuItemType.itText);
+        $with.SetMaterialGlyph("open_in_browser");
         var $with1 = this.MainMenu.FItems.Add$1();
         $with1.SetText("Item 2");
         $with1.SetType(pas["WEBLib.SideMenu"].TSideMenuItemType.itText);
