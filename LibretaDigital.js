@@ -67441,6 +67441,7 @@ rtl.module("uRichEditor2",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.Salir1.SetParentComponent(this.WebPopupMenu1);
         this.Salir1.SetName("Salir1");
         this.Salir1.SetCaption("Salir");
+        this.Salir1.FVisible = false;
         this.SetEvent$1(this.Salir1,this,"OnClick","Salir1Click");
       } finally {
         this.panellEditor.AfterLoadDFMValues();
@@ -67993,6 +67994,7 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.Salir1.SetParentComponent(this.WebPopupMenu1);
         this.Salir1.SetName("Salir1");
         this.Salir1.SetCaption("Salir");
+        this.Salir1.FVisible = false;
         this.SetEvent$1(this.Salir1,this,"OnClick","Salir1Click");
       } finally {
         this.panelTabulator.AfterLoadDFMValues();
