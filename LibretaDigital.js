@@ -68237,16 +68237,24 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
     this.DivInicioClick = function (Sender) {
     };
     this.divDirectorioClick = function (Sender) {
+      this.MainMenu.BeginUpdate();
       this.MainMenuItemClick(Sender,1);
+      this.MainMenu.EndUpdate();
     };
     this.divNotaRapidaClick = function (Sender) {
+      this.MainMenu.BeginUpdate();
       this.MainMenuItemClick(Sender,2);
+      this.MainMenu.EndUpdate();
     };
     this.DivTabularClick = function (Sender) {
+      this.MainMenu.BeginUpdate();
       this.MainMenuItemClick(Sender,3);
+      this.MainMenu.EndUpdate();
     };
     this.divEditorClick = function (Sender) {
+      this.MainMenu.BeginUpdate();
       this.MainMenuItemClick(Sender,4);
+      this.MainMenu.EndUpdate();
     };
     this.CrearMenu = function () {
       var it = null;
