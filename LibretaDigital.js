@@ -85468,6 +85468,7 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
       var $tmp1 = AIndex;
       if ($tmp1 === 0) {}
       else if ($tmp1 === 1) {
+        this.WebIndexedDbClientLibretaAfterOpen(this.WebIndexedDbClientLibreta);
         pas["WEBLib.Forms"].Application.CreateForm$2(pas.uListaArchivos.TfrmListaArchivos,this.panelForma.GetID(),{p: $impl, get: function () {
             return this.p.newform1;
           }, set: function (v) {
