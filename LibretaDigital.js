@@ -85120,7 +85120,7 @@ rtl.module("uListaArchivos",["System","SysUtils","Classes","JS","Web","WEBLib.Gr
   });
   this.frmListaArchivos = null;
 });
-rtl.module("uListaArchivosModal",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","WEBLib.Controls","WEBLib.Forms","WEBLib.Dialogs","WEBLib.Controls","WEBLib.StdCtrls","WEBLib.StdCtrls","WEBLib.ExtCtrls"],function () {
+rtl.module("uListaArchivosModal",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","WEBLib.Controls","WEBLib.Forms","WEBLib.Dialogs","WEBLib.Controls","WEBLib.StdCtrls","WEBLib.StdCtrls","WEBLib.ExtCtrls","WEBLib.Lists"],function () {
   "use strict";
   var $mod = this;
   rtl.createClass(this,"TfrmListaArchivosModal",pas["WEBLib.Forms"].TForm,function () {
@@ -85140,10 +85140,18 @@ rtl.module("uListaArchivosModal",["System","SysUtils","Classes","JS","Web","WEBL
       this.Close();
     };
     this.cargarDirectorio = function (strListaArchivos, tipo) {
+      var i = 0;
       var $tmp = tipo;
       if ($tmp === 2) {
-        this.listaArchivos.FItems.AddStrings(strListaArchivos)}
-       else if ($tmp === 3) {
+        this.listaArchivos.BeginUpdate();
+        this.listaArchivos.FItems.Clear();
+        for (var $l = 0, $end = strListaArchivos.GetCount() - 1; $l <= $end; $l++) {
+          i = $l;
+          window.console.log("item" + strListaArchivos.Get(i));
+          this.listaArchivos.FItems.Add(strListaArchivos.Get(i));
+        };
+        this.listaArchivos.EndUpdate();
+      } else if ($tmp === 3) {
         this.listaArchivos.FItems.AddStrings(strListaArchivos)}
        else if ($tmp === 4) this.listaArchivos.FItems.AddStrings(strListaArchivos);
     };
@@ -86080,6 +86088,8 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
           WIndexedDbClientLibreta.FieldByName("fecha").SetAsString(pas.SysUtils.DateToStr(pas.SysUtils.Now()));
           WIndexedDbClientLibreta.Post();
         };
+        WIndexedDbClientLibreta.Close();
+        WIndexedDbClientLibreta.SetActive(true);
       };
     };
     this.CargarHTabular = function (textotabla) {
@@ -86571,6 +86581,8 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
           WIndexedDbClientLibreta.FieldByName("fecha").SetAsString(pas.SysUtils.DateToStr(pas.SysUtils.Now()));
           WIndexedDbClientLibreta.Post();
         };
+        WIndexedDbClientLibreta.Close();
+        WIndexedDbClientLibreta.SetActive(true);
       };
     };
     this.CargarEditor = function (textoeditor) {
@@ -87081,6 +87093,8 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
         rtl.as(AForm,pas.uListaArchivosModal.TfrmListaArchivosModal).cargarDirectorio($impl.strListaArchivos,$impl.itemMenuSel);
         rtl.as(AForm,pas.uListaArchivosModal.TfrmListaArchivosModal).listaArchivos.FOnClick = rtl.createCallback($Self,"ListaArchivosHandler");
         rtl.as(AForm,pas.uListaArchivosModal.TfrmListaArchivosModal).panelboton.FOnClick = rtl.createCallback($Self,"AgregarNuevoHandler");
+        window.console.log($impl.strListaArchivos);
+        window.console.log(rtl.as(AForm,pas.uListaArchivosModal.TfrmListaArchivosModal).listaArchivos.FItems);
       };
       itmsel = pas.SysUtils.StrToInt(pas.SysUtils.TIntegerHelper.ToString$1.call({p: this.MainMenu, get: function () {
           return this.p.FSelectedItem;
@@ -87089,16 +87103,23 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
         }}));
       var $tmp = itmsel;
       if ($tmp === 2) {
-        if ($impl.newform2 !== null) $impl.newform2.GrabarEditor(this.WebIndexedDbClientLibreta);
+        if ($impl.newform2 !== null) {
+          $impl.newform2.GrabarEditor(this.WebIndexedDbClientLibreta);
+          $impl.newform2 = null;
+          return;
+        };
       } else if ($tmp === 3) {
-        if ($impl.newForm3 !== null) $impl.newForm3.GrabarHTabular(this.WebIndexedDbClientLibreta)}
+        if ($impl.newForm3 !== null) {
+          $impl.newForm3.GrabarHTabular(this.WebIndexedDbClientLibreta);
+          $impl.newForm3 = null;
+          return;
+        }}
        else if ($tmp === 4) if ($impl.newForm4 !== null) $impl.newForm4.GrabarEditor();
       $impl.itemMenuSel = AIndex;
       var $tmp1 = AIndex;
       if ($tmp1 === 0) {}
-      else if ($tmp1 === 1) {
-        this.WebIndexedDbClientLibretaAfterOpen(this.WebIndexedDbClientLibreta);
-      } else if ($tmp1 === 2) {
+      else if ($tmp1 === 1) {}
+      else if ($tmp1 === 2) {
         pas["WEBLib.Forms"].Application.CreateForm$2(pas.uListaArchivosModal.TfrmListaArchivosModal,this.panelForma.GetID(),{p: $impl, get: function () {
             return this.p.newformlista;
           }, set: function (v) {
@@ -87753,10 +87774,10 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
         this.WebPanel3.SetTabOrder(1);
         this.diveditorq.SetParentComponent(this);
         this.diveditorq.SetName("diveditorq");
-        this.diveditorq.SetLeft(136);
-        this.diveditorq.SetTop(33);
-        this.diveditorq.SetWidth(313);
-        this.diveditorq.SetHeight(201);
+        this.diveditorq.SetLeft(164);
+        this.diveditorq.SetTop(80);
+        this.diveditorq.SetWidth(105);
+        this.diveditorq.SetHeight(57);
         this.diveditorq.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.diveditorq.SetWidthStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.diveditorq.SetChildOrderEx(3);
