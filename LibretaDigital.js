@@ -58053,9 +58053,20 @@ rtl.module("uEditor",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics"
     };
     this.GrabarEditor = function () {
       var htmlContent = "";
-      var jshtmlContent = this.suneditor.getContents();
-      htmlContent=jshtmlContent;
-      if (htmlContent.length > 0) {
+      var txtContent = "";
+      var icharCount = 0;
+      const charCount = this.suneditor.getCharCount();
+           console.log('char count',charCount);
+           icharCount = charCount;
+      
+           var jshtmlContent = this.suneditor.getContents();
+           htmlContent=jshtmlContent;
+      
+           const text = this.suneditor.getContents({ format: 'text' });
+           txtContent=text;
+           const length = text.length;
+           console.log('texto',txtContent,length);
+      if (icharCount > 0) {
         this.SunEditorSave(htmlContent);
       };
     };
@@ -86049,16 +86060,21 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
             {
               //var htmlTableString = table.getHtml();
                var data = table.getData();
-               console.log('tabultor',data);
+               var dataLength = data.length;
+               console.log('tabultor data length',dataLength);
                var jsonString = JSON.stringify(data);
                const len = jsonString.length;
                if (len > 0)
                {
-                  alert('grabar hoja tabular:'+jsonString);
+       //           alert('grabar hoja tabular:'+jsonString);
                }
       
                long = jsonString.length;
                HTabularTexto = jsonString;
+               var count = table.getDataCount();
+               console.log('tabultor data count',count);
+               long = count;
+      
             };
       grabar = -1;
       if (long > 0) {
@@ -86551,6 +86567,9 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       const htmlContent = quillInstance.root.innerHTML;
       console.log('HTML content:', htmlContent);
             long = htmlContent.length;
+      
+            var textLength = quillInstance.getLength() - 1;
+            long=textLength;
             EditorTexto= htmlContent;
       };
       grabar = -1;
