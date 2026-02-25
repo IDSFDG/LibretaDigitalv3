@@ -86048,7 +86048,7 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       
             };
     };
-    this.GrabarHTabular = function (WIndexedDbClientLibreta) {
+    this.GrabarHTabular = function (WIndexedDbClientLibreta, strListaArchivos) {
       var long = 0;
       var mr = 0;
       var id = "";
@@ -86090,22 +86090,23 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         };
         if (grabar < 1) return;
         id = this.lbid.FCaption;
-        if (WIndexedDbClientLibreta.Locate("id",id,{})) {
-          WIndexedDbClientLibreta.Edit();
-          WIndexedDbClientLibreta.FieldByName("textoreg").SetAsString(HTabularTexto);
-          WIndexedDbClientLibreta.Post();
+        if (WIndexedDbClientLibreta.get().Locate("id",id,{})) {
+          WIndexedDbClientLibreta.get().Edit();
+          WIndexedDbClientLibreta.get().FieldByName("textoreg").SetAsString(HTabularTexto);
+          WIndexedDbClientLibreta.get().Post();
         } else {
-          WIndexedDbClientLibreta.Append();
-          id = WIndexedDbClientLibreta.FieldByName("id").GetAsString();
-          id = pas.SysUtils.IntToStr(WIndexedDbClientLibreta.GetRecordCount() + 1);
-          WIndexedDbClientLibreta.FieldByName("textoreg").SetAsString(HTabularTexto);
-          WIndexedDbClientLibreta.FieldByName("tipo").SetAsString("1");
-          WIndexedDbClientLibreta.FieldByName("nombre").SetAsString("HojaTab-" + id);
-          WIndexedDbClientLibreta.FieldByName("fecha").SetAsString(pas.SysUtils.DateToStr(pas.SysUtils.Now()));
-          WIndexedDbClientLibreta.Post();
+          WIndexedDbClientLibreta.get().Append();
+          id = WIndexedDbClientLibreta.get().FieldByName("id").GetAsString();
+          id = pas.SysUtils.IntToStr(WIndexedDbClientLibreta.get().GetRecordCount() + 1);
+          WIndexedDbClientLibreta.get().FieldByName("textoreg").SetAsString(HTabularTexto);
+          WIndexedDbClientLibreta.get().FieldByName("tipo").SetAsString("1");
+          WIndexedDbClientLibreta.get().FieldByName("nombre").SetAsString("HojaTab-" + id);
+          WIndexedDbClientLibreta.get().FieldByName("fecha").SetAsString(pas.SysUtils.DateToStr(pas.SysUtils.Now()));
+          WIndexedDbClientLibreta.get().Post();
+          strListaArchivos.get().Add(WIndexedDbClientLibreta.get().FieldByName("nombre").GetAsString());
         };
-        WIndexedDbClientLibreta.Close();
-        WIndexedDbClientLibreta.SetActive(true);
+        WIndexedDbClientLibreta.get().Close();
+        WIndexedDbClientLibreta.get().SetActive(true);
       };
     };
     this.CargarHTabular = function (textotabla) {
@@ -86523,7 +86524,6 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.webBotonMenu.SetElementClassName("btn btn-lg bg-dark text-white");
     };
     this.WebButton1Click = function (Sender) {
-      this.GrabarEditor(null);
     };
     this.WebButton2Click = function (Sender) {
       // 1. Get the DOM element that contains the Quill editor
@@ -86544,7 +86544,7 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
     this.webBotonMenuClick = function (Sender) {
       this.WebPopupMenu1.Popup(this.webBotonMenu.GetLeft() - 180,this.webBotonMenu.GetTop() + this.webBotonMenu.GetHeight());
     };
-    this.GrabarEditor = function (WIndexedDbClientLibreta) {
+    this.GrabarEditor = function (WIndexedDbClientLibreta, strListaArchivos) {
       var long = 0;
       var mr = 0;
       var id = "";
@@ -86586,22 +86586,23 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         };
         if (grabar < 1) return;
         id = this.lbid.FCaption;
-        if (WIndexedDbClientLibreta.Locate("id",id,{})) {
-          WIndexedDbClientLibreta.Edit();
-          WIndexedDbClientLibreta.FieldByName("textoreg").SetAsString(EditorTexto);
-          WIndexedDbClientLibreta.Post();
+        if (WIndexedDbClientLibreta.get().Locate("id",id,{})) {
+          WIndexedDbClientLibreta.get().Edit();
+          WIndexedDbClientLibreta.get().FieldByName("textoreg").SetAsString(EditorTexto);
+          WIndexedDbClientLibreta.get().Post();
         } else {
-          WIndexedDbClientLibreta.Append();
-          id = WIndexedDbClientLibreta.FieldByName("id").GetAsString();
-          id = pas.SysUtils.IntToStr(WIndexedDbClientLibreta.GetRecordCount() + 1);
-          WIndexedDbClientLibreta.FieldByName("textoreg").SetAsString(EditorTexto);
-          WIndexedDbClientLibreta.FieldByName("tipo").SetAsString("1");
-          WIndexedDbClientLibreta.FieldByName("nombre").SetAsString("Nota-" + id);
-          WIndexedDbClientLibreta.FieldByName("fecha").SetAsString(pas.SysUtils.DateToStr(pas.SysUtils.Now()));
-          WIndexedDbClientLibreta.Post();
+          WIndexedDbClientLibreta.get().Append();
+          id = WIndexedDbClientLibreta.get().FieldByName("id").GetAsString();
+          id = pas.SysUtils.IntToStr(WIndexedDbClientLibreta.get().GetRecordCount() + 1);
+          WIndexedDbClientLibreta.get().FieldByName("textoreg").SetAsString(EditorTexto);
+          WIndexedDbClientLibreta.get().FieldByName("tipo").SetAsString("1");
+          WIndexedDbClientLibreta.get().FieldByName("nombre").SetAsString("Nota-" + id);
+          WIndexedDbClientLibreta.get().FieldByName("fecha").SetAsString(pas.SysUtils.DateToStr(pas.SysUtils.Now()));
+          WIndexedDbClientLibreta.get().Post();
+          strListaArchivos.get().Add(WIndexedDbClientLibreta.get().FieldByName("nombre").GetAsString());
         };
-        WIndexedDbClientLibreta.Close();
-        WIndexedDbClientLibreta.SetActive(true);
+        WIndexedDbClientLibreta.get().Close();
+        WIndexedDbClientLibreta.get().SetActive(true);
       };
     };
     this.CargarEditor = function (textoeditor) {
@@ -87011,7 +87012,6 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
     $r.addMethod("WebButton2Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("webBotonMenuClick",0,[["Sender",pas.System.$rtti["TObject"]]]);
   });
-  this.frmRichEditorQ = null;
 });
 rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","WEBLib.Controls","WEBLib.Forms","WEBLib.Dialogs","WEBLib.Controls","WEBLib.SideMenu","WEBLib.ExtCtrls","WEBLib.WebCtrls","WEBLib.StdCtrls","WEBLib.StdCtrls","WEBLib.Buttons","WEBLib.ComCtrls","DB","WEBLib.IndexedDb","WEBLib.Lists"],function () {
   "use strict";
@@ -87107,13 +87107,24 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
         rtl.as(AForm,pas.uRichEditor2.TfrmEditorRich).sstrListaArchivos.Assign($impl.strListaArchivos);
         rtl.as(AForm,pas.uRichEditor2.TfrmEditorRich).cargarDirectorio();
       };
-      function AfterCreate3(AForm) {
-        window.console.log("datos libreta",$impl.datosListalib);
-        rtl.as(AForm,pas.uListaArchivosModal.TfrmListaArchivosModal).cargarDirectorio($impl.strListaArchivos,$impl.itemMenuSel);
+      async function AfterCreate3(AForm) {
+        var i = 0;
         rtl.as(AForm,pas.uListaArchivosModal.TfrmListaArchivosModal).listaArchivos.FOnClick = rtl.createCallback($Self,"ListaArchivosHandler");
         rtl.as(AForm,pas.uListaArchivosModal.TfrmListaArchivosModal).panelboton.FOnClick = rtl.createCallback($Self,"AgregarNuevoHandler");
+        window.console.log("lista archivos");
         window.console.log($impl.strListaArchivos);
         window.console.log(rtl.as(AForm,pas.uListaArchivosModal.TfrmListaArchivosModal).listaArchivos.FItems);
+        var $with = rtl.as(AForm,pas.uListaArchivosModal.TfrmListaArchivosModal);
+        $with.listaArchivos.FItems.Clear();
+        $with.listaArchivos.BeginUpdate();
+        for (var $l = 0, $end = $impl.strListaArchivos.GetCount() - 1; $l <= $end; $l++) {
+          i = $l;
+          $with.listaArchivos.FItems.Add($impl.strListaArchivos.Get(i));
+        };
+        $with.listaArchivos.EndUpdate();
+        window.console.log("items lista");
+        window.console.log($with.listaArchivos.FItems);
+        $with.SetVisible(true);
       };
       itmsel = pas.SysUtils.StrToInt(pas.SysUtils.TIntegerHelper.ToString$1.call({p: this.MainMenu, get: function () {
           return this.p.FSelectedItem;
@@ -87123,15 +87134,27 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
       var $tmp = itmsel;
       if ($tmp === 2) {
         if ($impl.newform2 !== null) {
-          $impl.newform2.GrabarEditor(this.WebIndexedDbClientLibreta);
-          $impl.newform2 = null;
-          return;
+          $impl.newform2.GrabarEditor({p: this, get: function () {
+              return this.p.WebIndexedDbClientLibreta;
+            }, set: function (v) {
+              this.p.WebIndexedDbClientLibreta = v;
+            }},{p: $impl, get: function () {
+              return this.p.strListaArchivos;
+            }, set: function (v) {
+              this.p.strListaArchivos = v;
+            }});
         };
       } else if ($tmp === 3) {
         if ($impl.newForm3 !== null) {
-          $impl.newForm3.GrabarHTabular(this.WebIndexedDbClientLibreta);
-          $impl.newForm3 = null;
-          return;
+          $impl.newForm3.GrabarHTabular({p: this, get: function () {
+              return this.p.WebIndexedDbClientLibreta;
+            }, set: function (v) {
+              this.p.WebIndexedDbClientLibreta = v;
+            }},{p: $impl, get: function () {
+              return this.p.strListaArchivos;
+            }, set: function (v) {
+              this.p.strListaArchivos = v;
+            }});
         }}
        else if ($tmp === 4) if ($impl.newForm4 !== null) $impl.newForm4.GrabarEditor();
       $impl.itemMenuSel = AIndex;
