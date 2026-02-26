@@ -85226,6 +85226,18 @@ rtl.module("uListaArchivosModal",["System","SysUtils","Classes","JS","Web","WEBL
     };
     this.listaArchivos2ItemClick = function (Sender, AListItem) {
     };
+    this.paneltopClick = function (Sender) {
+      var strfiltro = "";
+      let result = prompt('Filtrar:', '');
+      strfiltro=result;
+      if (strfiltro.length === 0) {
+        this.listaArchivos2.RemoveFilter()}
+       else {
+        this.listaArchivos2.RemoveFilter();
+        strfiltro = strfiltro + "*";
+        this.listaArchivos2.SetFilter(strfiltro,false);
+      };
+    };
     this.cargarDirectorio = function (strListaArchivos, tipo) {
       var i = 0;
       var $tmp = tipo;
@@ -85283,33 +85295,37 @@ rtl.module("uListaArchivosModal",["System","SysUtils","Classes","JS","Web","WEBL
         this.paneltop.SetLeft(0);
         this.paneltop.SetTop(0);
         this.paneltop.SetWidth(405);
-        this.paneltop.SetHeight(52);
+        this.paneltop.SetHeight(49);
+        this.paneltop.SetHint("Click para filtrar");
         this.paneltop.SetElementClassName("card");
         this.paneltop.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.paneltop.SetCaption("Directorio");
         this.paneltop.SetChildOrderEx(1);
         this.paneltop.FElementBodyClassName = "card-body";
         this.paneltop.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.paneltop.SetShowHint(true);
         this.paneltop.SetTabOrder(1);
+        this.SetEvent$1(this.paneltop,this,"OnClick","paneltopClick");
         this.listaArchivos.SetParentComponent(this);
         this.listaArchivos.SetName("listaArchivos");
         this.listaArchivos.SetLeft(0);
-        this.listaArchivos.SetTop(52);
+        this.listaArchivos.SetTop(49);
         this.listaArchivos.SetWidth(405);
-        this.listaArchivos.SetHeight(109);
+        this.listaArchivos.SetHeight(26);
         this.listaArchivos.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.listaArchivos.SetElementClassName("form-control");
         this.listaArchivos.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.listaArchivos.SetHeightPercent(100.000000000000000000);
         this.listaArchivos.SetItemHeight(18);
+        this.listaArchivos.SetVisible(false);
         this.listaArchivos.SetWidthPercent(100.000000000000000000);
         this.listaArchivos.SetItemIndex(-1);
         this.listaArchivos2.SetParentComponent(this);
         this.listaArchivos2.SetName("listaArchivos2");
         this.listaArchivos2.SetLeft(0);
-        this.listaArchivos2.SetTop(161);
+        this.listaArchivos2.SetTop(75);
         this.listaArchivos2.SetWidth(405);
-        this.listaArchivos2.SetHeight(104);
+        this.listaArchivos2.SetHeight(210);
         this.listaArchivos2.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.listaArchivos2.SetHeightPercent(100.000000000000000000);
         this.listaArchivos2.SetWidthPercent(100.000000000000000000);
@@ -85350,6 +85366,7 @@ rtl.module("uListaArchivosModal",["System","SysUtils","Classes","JS","Web","WEBL
     $r.addField("listaArchivos2",pas["WEBLib.Lists"].$rtti["TListControl"]);
     $r.addMethod("panelbotonClick",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("listaArchivos2ItemClick",0,[["Sender",pas.System.$rtti["TObject"]],["AListItem",pas["WEBLib.Lists"].$rtti["TListItem"]]]);
+    $r.addMethod("paneltopClick",0,[["Sender",pas.System.$rtti["TObject"]]]);
   });
   this.frmListaArchivosModal = null;
 });
