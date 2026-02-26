@@ -87329,7 +87329,7 @@ rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
           id = pas.SysUtils.IntToStr(WIndexedDbClientLibreta.get().GetRecordCount() + 1);
           WIndexedDbClientLibreta.get().FieldByName("textoreg").SetAsString(EditorTexto);
           WIndexedDbClientLibreta.get().FieldByName("tipo").SetAsString("1");
-          WIndexedDbClientLibreta.get().FieldByName("nombre").SetAsString("Nota-" + id);
+          WIndexedDbClientLibreta.get().FieldByName("nombre").SetAsString("Texto-" + id);
           WIndexedDbClientLibreta.get().FieldByName("fecha").SetAsString(pas.SysUtils.DateToStr(pas.SysUtils.Now()));
           WIndexedDbClientLibreta.get().Post();
           strListaArchivos.get().Add(WIndexedDbClientLibreta.get().FieldByName("nombre").GetAsString());
@@ -88157,7 +88157,6 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
       $impl.datosListalib = llistalib;
     };
     this.listaArchivosItemClick = function (Sender, AListItem) {
-      pas["WEBLib.Dialogs"].ShowMessage(AListItem.FText);
     };
     this.listaArchivosClick = function (Sender) {
       var sitem = "";
@@ -88301,7 +88300,7 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
         itemlistsel = 1}
        else if (pas.System.Pos("Hoja",itemselstr) !== 0) {
         itemlistsel = 2}
-       else if (pas.System.Pos("Editor",itemselstr) !== 0) itemlistsel = 3;
+       else if (pas.System.Pos("Texto",itemselstr) !== 0) itemlistsel = 3;
       if (this.WebIndexedDbClientLibreta.Locate("id",id,{})) {
         tipo = pas.SysUtils.StrToInt(this.WebIndexedDbClientLibreta.FieldByName("tipo").GetAsString());
         $impl.textoregnr = this.WebIndexedDbClientLibreta.FieldByName("textoreg").GetAsString();
@@ -88352,7 +88351,6 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
       };
       if (AListItem.FText.length === 0) return;
       itemselstr = AListItem.FText;
-      pas["WEBLib.Dialogs"].ShowMessage("click lista arch " + pas.SysUtils.IntToStr(itemsel) + " " + itemselstr);
       if (itemsel === -1) return;
       p = pas.System.Pos("-",itemselstr) + 1;
       id = pas.System.Copy(itemselstr,p,itemselstr.length);
@@ -88363,7 +88361,7 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
         itemlistsel = 1}
        else if (pas.System.Pos("Hoja",itemselstr) !== 0) {
         itemlistsel = 2}
-       else if (pas.System.Pos("Editor",itemselstr) !== 0) itemlistsel = 3;
+       else if (pas.System.Pos("Texto",itemselstr) !== 0) itemlistsel = 3;
       if (this.WebIndexedDbClientLibreta.Locate("id",id,{})) {
         tipo = pas.SysUtils.StrToInt(this.WebIndexedDbClientLibreta.FieldByName("tipo").GetAsString());
         $impl.textoregnr = this.WebIndexedDbClientLibreta.FieldByName("textoreg").GetAsString();
@@ -88520,7 +88518,7 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
         this.MainMenu.FAppearance.FCaptionFont.SetStyle(rtl.createSet(pas["WEBLib.Graphics"].TFontStyle.fsBold));
         this.MainMenu.FAppearance.FItemFont.FCharset = 1;
         this.MainMenu.FAppearance.FItemFont.SetColor(65793);
-        this.MainMenu.FAppearance.FItemFont.SetHeight(-11);
+        this.MainMenu.FAppearance.FItemFont.SetHeight(-13);
         this.MainMenu.FAppearance.FItemFont.SetName("Tahoma");
         this.MainMenu.FAppearance.FItemFont.SetStyle({});
         this.MainMenu.FAppearance.FFixedItemFont.FCharset = 1;
