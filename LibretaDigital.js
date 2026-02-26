@@ -87820,7 +87820,7 @@ rtl.module("uAyuda",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
         this.WebHTMLDiv1.SetTop(0);
         this.WebHTMLDiv1.SetWidth(640);
         this.WebHTMLDiv1.SetHeight(448);
-        this.WebHTMLDiv1.SetElementClassName("border border-4");
+        this.WebHTMLDiv1.SetElementClassName('text-wrap style="width: 150px"  border border-4');
         this.WebHTMLDiv1.SetAlign(pas["WEBLib.Controls"].TAlign.alClient);
         this.WebHTMLDiv1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebHTMLDiv1.SetRole("");
