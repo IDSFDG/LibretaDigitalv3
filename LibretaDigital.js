@@ -86207,7 +86207,6 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
           WIndexedDbClientLibreta.get().Post();
         } else {
           WIndexedDbClientLibreta.get().Append();
-          id = WIndexedDbClientLibreta.get().FieldByName("id").GetAsString();
           id = pas.SysUtils.IntToStr(WIndexedDbClientLibreta.get().GetRecordCount() + 1);
           WIndexedDbClientLibreta.get().FieldByName("textoreg").SetAsString(HTabularTexto);
           WIndexedDbClientLibreta.get().FieldByName("tipo").SetAsString("2");
@@ -86703,7 +86702,6 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
           WIndexedDbClientLibreta.get().Post();
         } else {
           WIndexedDbClientLibreta.get().Append();
-          id = WIndexedDbClientLibreta.get().FieldByName("id").GetAsString();
           id = pas.SysUtils.IntToStr(WIndexedDbClientLibreta.get().GetRecordCount() + 1);
           WIndexedDbClientLibreta.get().FieldByName("textoreg").SetAsString(EditorTexto);
           WIndexedDbClientLibreta.get().FieldByName("tipo").SetAsString("1");
@@ -87311,7 +87309,6 @@ rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
           WIndexedDbClientLibreta.get().Post();
         } else {
           WIndexedDbClientLibreta.get().Append();
-          id = WIndexedDbClientLibreta.get().FieldByName("id").GetAsString();
           id = pas.SysUtils.IntToStr(WIndexedDbClientLibreta.get().GetRecordCount() + 1);
           WIndexedDbClientLibreta.get().FieldByName("textoreg").SetAsString(EditorTexto);
           WIndexedDbClientLibreta.get().FieldByName("tipo").SetAsString("1");
@@ -87965,73 +87962,75 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
         }, set: function (v) {
           this.p.FSelectedItem = v;
         }}));
-      var $tmp = itmsel;
-      if ($tmp === 3) {
-        if ($impl.newform2 !== null) {
-          $impl.newform2.GrabarEditor({p: this, get: function () {
-              return this.p.WebIndexedDbClientLibreta;
-            }, set: function (v) {
-              this.p.WebIndexedDbClientLibreta = v;
-            }},{p: $impl, get: function () {
-              return this.p.strListaArchivos;
-            }, set: function (v) {
-              this.p.strListaArchivos = v;
-            }});
-        };
-      } else if ($tmp === 4) {
-        if ($impl.newForm3 !== null) {
-          $impl.newForm3.GrabarHTabular({p: this, get: function () {
-              return this.p.WebIndexedDbClientLibreta;
-            }, set: function (v) {
-              this.p.WebIndexedDbClientLibreta = v;
-            }},{p: $impl, get: function () {
-              return this.p.strListaArchivos;
-            }, set: function (v) {
-              this.p.strListaArchivos = v;
-            }});
-        }}
-       else if ($tmp === 5) if ($impl.newForm4 !== null) $impl.newForm4.GrabarEditor({p: this, get: function () {
-          return this.p.WebIndexedDbClientLibreta;
-        }, set: function (v) {
-          this.p.WebIndexedDbClientLibreta = v;
-        }},{p: $impl, get: function () {
-          return this.p.strListaArchivos;
-        }, set: function (v) {
-          this.p.strListaArchivos = v;
-        }});
-      var $tmp1 = AIndex;
-      if ($tmp1 === 0) {}
-      else if ($tmp1 === 1) {
+      if ($impl.newform2 != null) {
+        $impl.newform2.GrabarEditor({p: this, get: function () {
+            return this.p.WebIndexedDbClientLibreta;
+          }, set: function (v) {
+            this.p.WebIndexedDbClientLibreta = v;
+          }},{p: $impl, get: function () {
+            return this.p.strListaArchivos;
+          }, set: function (v) {
+            this.p.strListaArchivos = v;
+          }});
+        $impl.newform2 = null;
+      };
+      if ($impl.newForm3 != null) {
+        $impl.newForm3.GrabarHTabular({p: this, get: function () {
+            return this.p.WebIndexedDbClientLibreta;
+          }, set: function (v) {
+            this.p.WebIndexedDbClientLibreta = v;
+          }},{p: $impl, get: function () {
+            return this.p.strListaArchivos;
+          }, set: function (v) {
+            this.p.strListaArchivos = v;
+          }});
+        $impl.newForm3 = null;
+      };
+      if ($impl.newForm4 != null) {
+        $impl.newForm4.GrabarEditor({p: this, get: function () {
+            return this.p.WebIndexedDbClientLibreta;
+          }, set: function (v) {
+            this.p.WebIndexedDbClientLibreta = v;
+          }},{p: $impl, get: function () {
+            return this.p.strListaArchivos;
+          }, set: function (v) {
+            this.p.strListaArchivos = v;
+          }});
+        $impl.newForm4 = null;
+      };
+      var $tmp = AIndex;
+      if ($tmp === 0) {}
+      else if ($tmp === 1) {
         pas["WEBLib.Forms"].Application.CreateForm$1(pas.uAyuda.TfrmAyuda,this.panelForma.GetID(),{p: $impl, get: function () {
             return this.p.newform1;
           }, set: function (v) {
             this.p.newform1 = v;
           }});
-      } else if ($tmp1 === 2) {
+      } else if ($tmp === 2) {
         pas["WEBLib.Forms"].Application.CreateForm$2(pas.uListaArchivosModal.TfrmListaArchivosModal,this.panelForma.GetID(),{p: $impl, get: function () {
             return this.p.newformlista;
           }, set: function (v) {
             this.p.newformlista = v;
           }},AfterCreate3);
-      } else if ($tmp1 === 3) {
+      } else if ($tmp === 3) {
         pas["WEBLib.Forms"].Application.CreateForm$1(pas.uRichEditor4.TfrmRichEditorQ,this.panelForma.GetID(),{p: $impl, get: function () {
             return this.p.newform2;
           }, set: function (v) {
             this.p.newform2 = v;
           }});
-      } else if ($tmp1 === 4) {
+      } else if ($tmp === 4) {
         pas["WEBLib.Forms"].Application.CreateForm$1(pas.uHojaTabular.TfrmTabHoja,this.panelForma.GetID(),{p: $impl, get: function () {
             return this.p.newForm3;
           }, set: function (v) {
             this.p.newForm3 = v;
           }});
-      } else if ($tmp1 === 5) {
+      } else if ($tmp === 5) {
         pas["WEBLib.Forms"].Application.CreateForm$1(pas.uRichEditor5.TfrmRichEditorQ2,this.panelForma.GetID(),{p: $impl, get: function () {
             return this.p.newForm4;
           }, set: function (v) {
             this.p.newForm4 = v;
           }});
-      } else if ($tmp1 === 6) {
+      } else if ($tmp === 6) {
         pas["WEBLib.Forms"].Application.Terminate();
       };
       this.MainMenu.SetSelectedItem(AIndex);
