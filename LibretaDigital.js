@@ -85229,7 +85229,13 @@ rtl.module("uListaArchivosModal",["System","SysUtils","Classes","JS","Web","WEBL
     this.paneltopClick = function (Sender) {
       var strfiltro = "";
       let result = prompt('Filtrar:', '');
+      if (result === null) {
+       //alert("Input was cancelled.");
+        strfiltro='null';
+        return; // Exit the function or stop further processing
+      }
       strfiltro=result;
+      if (strfiltro === '"null') return;
       if (strfiltro.length === 0) {
         this.listaArchivos2.RemoveFilter()}
        else {
@@ -85283,7 +85289,7 @@ rtl.module("uListaArchivosModal",["System","SysUtils","Classes","JS","Web","WEBL
         this.panelboton.SetTop(291);
         this.panelboton.SetWidth(405);
         this.panelboton.SetHeight(60);
-        this.panelboton.SetElementClassName("card");
+        this.panelboton.SetElementClassName("card bg-primary");
         this.panelboton.SetAlign(pas["WEBLib.Controls"].TAlign.alBottom);
         this.panelboton.SetChildOrderEx(1);
         this.panelboton.FElementBodyClassName = "card-body";
@@ -85297,7 +85303,7 @@ rtl.module("uListaArchivosModal",["System","SysUtils","Classes","JS","Web","WEBL
         this.paneltop.SetWidth(405);
         this.paneltop.SetHeight(49);
         this.paneltop.SetHint("Click para filtrar");
-        this.paneltop.SetElementClassName("card");
+        this.paneltop.SetElementClassName("card bg-primary");
         this.paneltop.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.paneltop.SetCaption("Directorio");
         this.paneltop.SetChildOrderEx(1);
@@ -86145,7 +86151,7 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
              });
       this.webBotonMenu.SetCaption("" + "☰");
       this.webBotonMenu.SetCaption("" + "⋮");
-      this.webBotonMenu.SetElementClassName("btn btn-lg bg-dark text-white");
+      this.webBotonMenu.SetElementClassName("btn btn-lg bg-primary text-white");
       this.cambiosDatos = false;
     };
     this.panelTabulatorTitClick = function (Sender) {
@@ -86343,7 +86349,7 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.panelTabulatorTit.SetTop(0);
         this.panelTabulatorTit.SetWidth(640);
         this.panelTabulatorTit.SetHeight(41);
-        this.panelTabulatorTit.SetElementClassName("card");
+        this.panelTabulatorTit.SetElementClassName("card bg-primary");
         this.panelTabulatorTit.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.panelTabulatorTit.SetCaption("Hoja Tabular");
         this.panelTabulatorTit.FElementBodyClassName = "card-body";
@@ -86648,7 +86654,7 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.webBotonMenu.SetCaption("" + "☰");
       this.webBotonMenu.SetCaption("" + "⋮");
       this.lbmenu.SetCaption("" + "⋮");
-      this.webBotonMenu.SetElementClassName("btn btn-lg bg-dark text-white");
+      this.webBotonMenu.SetElementClassName("btn btn-lg bg-primary text-white");
     };
     this.WebButton1Click = function (Sender) {
     };
@@ -86824,7 +86830,7 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.panelEditorTit.SetTop(0);
         this.panelEditorTit.SetWidth(640);
         this.panelEditorTit.SetHeight(49);
-        this.panelEditorTit.SetElementClassName("card");
+        this.panelEditorTit.SetElementClassName("card bg-primary");
         this.panelEditorTit.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.panelEditorTit.SetCaption("Notas Rapidas");
         this.panelEditorTit.SetChildOrderEx(2);
@@ -87255,7 +87261,7 @@ rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.webBotonMenu.SetCaption("" + "☰");
       this.webBotonMenu.SetCaption("" + "⋮");
       this.lbmenu.SetCaption("" + "⋮");
-      this.webBotonMenu.SetElementClassName("btn btn-lg bg-dark text-white");
+      this.webBotonMenu.SetElementClassName("btn btn-lg bg-primary text-white");
     };
     this.WebButton1Click = function (Sender) {
     };
@@ -87431,7 +87437,7 @@ rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.panelEditorTit.SetTop(0);
         this.panelEditorTit.SetWidth(640);
         this.panelEditorTit.SetHeight(49);
-        this.panelEditorTit.SetElementClassName("card");
+        this.panelEditorTit.SetElementClassName("card bg-primary");
         this.panelEditorTit.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.panelEditorTit.SetCaption("Editor de Texto");
         this.panelEditorTit.SetChildOrderEx(2);
@@ -87830,7 +87836,7 @@ rtl.module("uAyuda",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
         this.WebPanel1.SetTop(448);
         this.WebPanel1.SetWidth(640);
         this.WebPanel1.SetHeight(32);
-        this.WebPanel1.SetElementClassName("card text-white bg-secondary mb-3");
+        this.WebPanel1.SetElementClassName("card text-white bg-primary mb-3");
         this.WebPanel1.SetAlign(pas["WEBLib.Controls"].TAlign.alBottom);
         this.WebPanel1.SetCaption("Salir");
         this.WebPanel1.SetChildOrderEx(1);
@@ -88482,9 +88488,11 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
         this.WebLabel1.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.WebLabel1.SetAlignment(pas.Classes.TAlignment.taCenter);
         this.WebLabel1.SetCaption("Libreta Digital");
+        this.WebLabel1.SetElementClassName("card bg-primary");
         this.WebLabel1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebLabel1.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.WebLabel1.SetHeightPercent(100.000000000000000000);
+        this.WebLabel1.SetTransparent(false);
         this.WebLabel1.SetWidthPercent(100.000000000000000000);
         this.SetEvent$1(this.WebLabel1,this,"OnClick","WebLabel1Click");
         this.MainMenu.SetParentComponent(this);
@@ -88571,7 +88579,7 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
         this.WebPanel1.SetTop(0);
         this.WebPanel1.SetWidth(313);
         this.WebPanel1.SetHeight(41);
-        this.WebPanel1.SetElementClassName("card");
+        this.WebPanel1.SetElementClassName("card bg-primary");
         this.WebPanel1.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.WebPanel1.SetWidthStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.WebPanel1.SetAlign(pas["WEBLib.Controls"].TAlign.alClient);
