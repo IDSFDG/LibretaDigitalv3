@@ -88982,7 +88982,7 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
           this.DivAyuda.FHTML.Add('<div class="card">    <!--style="width: 25rem;" -->');
           this.DivAyuda.FHTML.Add('  <div class="card-body">');
           this.DivAyuda.FHTML.Add("    <!-- Image with float-start and margin utilities -->");
-          this.DivAyuda.FHTML.Add('    <img src="https://github.com/IDSFDG/LibDigital/blob/main/img/DESCRIPCION.jpeg?raw=true" class="img-fluid rounded float-start me-3" ');
+          this.DivAyuda.FHTML.Add('    <img src="https://github.com/IDSFDG/LibDigital/blob/main/img/DESCRIPCIONsm.jpg?raw=true" class="img-fluid rounded float-start me-3" ');
           this.DivAyuda.FHTML.Add('alt="ejemplo ');
           this.DivAyuda.FHTML.Add('imagen">');
           this.DivAyuda.FHTML.Add('     <!--  <h5 class="card-title">Directorio (mis archivos) QUITAR OPCION</h5>-->');
