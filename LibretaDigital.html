@@ -30,12 +30,37 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+.scrollable-div {
+  /* Set a fixed height for the container */
+  height: 350px;
+  /* or use max-height: 150px; to allow it to be smaller if content fits */
+
+  /* Add a vertical scrollbar only when needed */
+  overflow-y: auto;
+
+  /* Optional: Add a border and some padding for better visualization */
+  border: 0px solid black;
+  padding: 10px;
+}
   </style>
 
 <!-- Include stylesheet -->
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
 <!-- Include the Quill library -->
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill-to-pdf@1.0.7/dist/main.min.js"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+
+<script type="module">
+// import { saveAs } from 'file-saver';
+import { pdfExporter } from 'quill-to-pdf';
+
+  console.log('pdfExporter',pdfExporter);
+  // Use pdfExporter.generatePdf(delta)
+</script>
+ -->
+ <script src="https://cdn.jsdelivr.net/npm/js-html2pdf@1.1.4/lib/html2pdf.min.js"></script>
 
 <!-- FontAwesome 5 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet"/>
