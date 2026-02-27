@@ -86573,7 +86573,10 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.divEditorQuill = null;
       this.divtoolbar = null;
       this.WebButton3 = null;
+      this.pdfHtml2Table1 = null;
       this.divElement = null;
+      this.jspdfver1 = null;
+      this.jspdfshare1 = null;
     };
     this.$final = function () {
       this.panelEditorTit = undefined;
@@ -86605,7 +86608,10 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.divEditorQuill = undefined;
       this.divtoolbar = undefined;
       this.WebButton3 = undefined;
+      this.pdfHtml2Table1 = undefined;
       this.divElement = undefined;
+      this.jspdfver1 = undefined;
+      this.jspdfshare1 = undefined;
       pas["WEBLib.Forms"].TForm.$final.call(this);
     };
     this.WebFormCreate = function (Sender) {
@@ -86721,6 +86727,135 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       };
       generateAndSharePdf();
     };
+    this.pdfHtml2Table1Click = async function (Sender) {
+      async function generateAndSharePdf() {
+          const element = document.getElementById('editor'); // The HTML element to convert
+          const options = {
+              margin: 0.5,
+              filename: 'document.pdf',
+              image: { type: 'jpeg', quality: 0.98 },
+              html2canvas: { scale: 2 },
+              jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+          };
+      
+          try {
+              // Generate the PDF as a Blob
+              const pdfBlob = await html2pdf().set(options).from(element).output('blob');
+      
+              // Create a File object from the Blob
+              const pdfFile = new File([pdfBlob], options.filename, { type: 'application/pdf' });
+      
+              // Check if the Web Share API is available
+              if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
+                  // Use the Web Share API to share the file
+                  await navigator.share({
+                      files: [pdfFile],
+                      title: 'Share PDF Document',
+                      text: 'Here is the generated PDF document.'
+                  });
+                  console.log('PDF shared successfully!');
+              } else {
+                  // Fallback for browsers that do not support the Web Share API with files
+                  alert('Web Share API with file support not available. The PDF will be downloaded instead.');
+                  html2pdf().set(options).from(element).save();
+              }
+          } catch (error) {
+              console.error('Error generating or sharing the PDF:', error);
+              alert('An error occurred. The PDF will be downloaded instead.');
+              html2pdf().set(options).from(element).save();
+          }
+      };
+      generateAndSharePdf();
+    };
+    this.pdfjspdfve1Click = function (Sender) {
+      // window.jsPDF = window.jspdf.jsPDF; // Assign jsPDF to window scope if using UMD bundle
+      
+      function generateAndSharePDF2(opcion) {
+          const pdfElement = document.getElementById('editor');
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF('p', 'pt', 'a4'); // Create jsPDF object
+      
+          doc.html(pdfElement, {
+              callback: function (doc) {
+              switch(opcion) {
+               case 1:
+                  // Option A: Prompt to download the PDF file
+                 // doc.save('my-document.pdf'); // Prompts the user to download the file
+                 break;
+               case 2:
+                  // Option B: Get a data URI and open in a new tab (simulates sharing view)
+                 // const pdfDataUri = doc.output('dataurl');
+                 // window.open(pdfDataUri, '_blank');
+                   doc.output('dataurlnewwindow');
+                 break;
+               case 3:
+                  // Option C: Get a Blob object for more advanced sharing (e.g., uploading to a server)
+                  // const pdfBlob = doc.output('blob');
+                    // You can then use the Blob for other purposes (e.g., using the Web Share API if in a compatible environment)
+              } // Switch
+              },
+              //margin:0,
+              x: 10,
+              y: 10,
+              width: 190, // target width in the PDF
+              windowWidth: 700 // window width in the HTML rendering
+          });
+      };
+      generateAndSharePDF2(2);
+    };
+    this.jspdfshare1Click = function (Sender) {
+      function generateAndSharePDF3(opcion) {
+          const pdfElement = document.getElementById('editor');
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF('p', 'pt', 'a4'); // Create jsPDF object
+      
+          doc.html(pdfElement, {
+              callback: function (doc) {
+              switch(opcion) {
+               case 1:
+                  // Option A: Prompt to download the PDF file
+                 // doc.save('my-document.pdf'); // Prompts the user to download the file
+                 break;
+               case 2:
+                  // Option B: Get a data URI and open in a new tab (simulates sharing view)
+                 // const pdfDataUri = doc.output('dataurl');
+                 // window.open(pdfDataUri, '_blank');
+                   doc.output('dataurlnewwindow');
+                 break;
+               case 3:
+                   var filename = 'documento.pdf';
+                  // Option C: Get a Blob object for more advanced sharing (e.g., uploading to a server)
+                   const pdfBlob = doc.output('blob');
+                    // You can then use the Blob for other purposes (e.g., using the Web Share API if in a compatible environment)
+                   const pdfFile = new File([pdfBlob], filename, { type: 'application/pdf' });
+                  // Check if the Web Share API is available
+                     if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
+                  // Use the Web Share API to share the file
+                       // await
+                        navigator.share({
+                       files: [pdfFile],
+                        title: 'Share PDF Document',
+                         text: 'Here is the generated PDF document.'
+                    });
+                     console.log('PDF shared successfully!');
+                 } else {
+                       // Fallback for browsers that do not support the Web Share API with files
+                        alert('Web Share API with file support not available. The PDF will be downloaded instead.');
+                    //  html2pdf().set(options).from(element).save();
+                 }
+      
+      
+              } // Switch
+              },
+              margin:0,
+              x: 10,
+              y: 10,
+              width: 190, // target width in the PDF
+              windowWidth: 700 // window width in the HTML rendering
+          });
+      };
+      generateAndSharePDF3(3);
+    };
     this.GrabarEditor = function (WIndexedDbClientLibreta, strListaArchivos) {
       var long = 0;
       var mr = 0;
@@ -86814,6 +86949,9 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.WebHTMLDiv1 = pas["WEBLib.WebCtrls"].THTMLDiv.$create("Create$1",[this]);
       this.divEditorQuill = pas["WEBLib.WebCtrls"].THTMLDiv.$create("Create$2",["editor"]);
       this.WebPopupMenu1 = pas["WEBLib.Menus"].TPopupMenu.$create("Create$1",[this]);
+      this.pdfHtml2Table1 = pas["WEBLib.Menus"].TMenuItem.$create("Create$1",[this]);
+      this.jspdfver1 = pas["WEBLib.Menus"].TMenuItem.$create("Create$1",[this]);
+      this.jspdfshare1 = pas["WEBLib.Menus"].TMenuItem.$create("Create$1",[this]);
       this.Cerrar1 = pas["WEBLib.Menus"].TMenuItem.$create("Create$1",[this]);
       this.Ayuda1 = pas["WEBLib.Menus"].TMenuItem.$create("Create$1",[this]);
       this.N1 = pas["WEBLib.Menus"].TMenuItem.$create("Create$1",[this]);
@@ -86844,6 +86982,9 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.WebHTMLDiv1.BeforeLoadDFMValues();
       this.divEditorQuill.BeforeLoadDFMValues();
       this.WebPopupMenu1.BeforeLoadDFMValues();
+      this.pdfHtml2Table1.BeforeLoadDFMValues();
+      this.jspdfver1.BeforeLoadDFMValues();
+      this.jspdfshare1.BeforeLoadDFMValues();
       this.Cerrar1.BeforeLoadDFMValues();
       this.Ayuda1.BeforeLoadDFMValues();
       this.N1.BeforeLoadDFMValues();
@@ -86995,8 +87136,8 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.SetEvent$1(this.WebButton2,this,"OnClick","WebButton2Click");
         this.WebButton3.SetParentComponent(this.panelEditorTit);
         this.WebButton3.SetName("WebButton3");
-        this.WebButton3.SetLeft(392);
-        this.WebButton3.SetTop(8);
+        this.WebButton3.SetLeft(121);
+        this.WebButton3.SetTop(18);
         this.WebButton3.SetWidth(96);
         this.WebButton3.SetHeight(25);
         this.WebButton3.SetCaption("PDF");
@@ -87005,12 +87146,13 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.WebButton3.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebButton3.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
         this.WebButton3.SetHeightPercent(100.000000000000000000);
+        this.WebButton3.SetVisible(false);
         this.WebButton3.SetWidthPercent(100.000000000000000000);
         this.SetEvent$1(this.WebButton3,this,"OnClick","WebButton3Click");
         this.divElement.SetParentComponent(this.panelEditorTit);
         this.divElement.SetName("divElement");
-        this.divElement.SetLeft(238);
-        this.divElement.SetTop(3);
+        this.divElement.SetLeft(382);
+        this.divElement.SetTop(2);
         this.divElement.SetWidth(100);
         this.divElement.SetHeight(41);
         this.divElement.SetChildOrderEx(8);
@@ -87069,6 +87211,7 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.WebHTMLDiv1.SetTop(82);
         this.WebHTMLDiv1.SetWidth(640);
         this.WebHTMLDiv1.SetHeight(398);
+        this.WebHTMLDiv1.SetElementClassName("scrollable-div");
         this.WebHTMLDiv1.SetAlign(pas["WEBLib.Controls"].TAlign.alClient);
         this.WebHTMLDiv1.SetChildOrderEx(3);
         this.WebHTMLDiv1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
@@ -87095,6 +87238,18 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.WebPopupMenu1.FFont.SetStyle({});
         this.WebPopupMenu1.SetLeft(457);
         this.WebPopupMenu1.SetTop(92);
+        this.pdfHtml2Table1.SetParentComponent(this.WebPopupMenu1);
+        this.pdfHtml2Table1.SetName("pdfHtml2Table1");
+        this.pdfHtml2Table1.SetCaption("pdf Html2Table share");
+        this.SetEvent$1(this.pdfHtml2Table1,this,"OnClick","pdfHtml2Table1Click");
+        this.jspdfver1.SetParentComponent(this.WebPopupMenu1);
+        this.jspdfver1.SetName("jspdfver1");
+        this.jspdfver1.SetCaption("jspdf ver");
+        this.SetEvent$1(this.jspdfver1,this,"OnClick","pdfjspdfve1Click");
+        this.jspdfshare1.SetParentComponent(this.WebPopupMenu1);
+        this.jspdfshare1.SetName("jspdfshare1");
+        this.jspdfshare1.SetCaption("jspdf share");
+        this.SetEvent$1(this.jspdfshare1,this,"OnClick","jspdfshare1Click");
         this.Cerrar1.SetParentComponent(this.WebPopupMenu1);
         this.Cerrar1.SetName("Cerrar1");
         this.Cerrar1.SetCaption("Cerrar menú");
@@ -87165,6 +87320,9 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.WebHTMLDiv1.AfterLoadDFMValues();
         this.divEditorQuill.AfterLoadDFMValues();
         this.WebPopupMenu1.AfterLoadDFMValues();
+        this.pdfHtml2Table1.AfterLoadDFMValues();
+        this.jspdfver1.AfterLoadDFMValues();
+        this.jspdfshare1.AfterLoadDFMValues();
         this.Cerrar1.AfterLoadDFMValues();
         this.Ayuda1.AfterLoadDFMValues();
         this.N1.AfterLoadDFMValues();
@@ -87214,12 +87372,18 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
     $r.addField("divEditorQuill",pas["WEBLib.WebCtrls"].$rtti["THTMLDiv"]);
     $r.addField("divtoolbar",pas["WEBLib.WebCtrls"].$rtti["THTMLDiv"]);
     $r.addField("WebButton3",pas["WEBLib.StdCtrls"].$rtti["TButton"]);
+    $r.addField("pdfHtml2Table1",pas["WEBLib.Menus"].$rtti["TMenuItem"]);
     $r.addField("divElement",pas["WEBLib.WebCtrls"].$rtti["THTMLDiv"]);
+    $r.addField("jspdfver1",pas["WEBLib.Menus"].$rtti["TMenuItem"]);
+    $r.addField("jspdfshare1",pas["WEBLib.Menus"].$rtti["TMenuItem"]);
     $r.addMethod("WebFormCreate",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebButton1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebButton2Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("webBotonMenuClick",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebButton3Click",0,[["Sender",pas.System.$rtti["TObject"]]],null,16,{attr: [pas.JS.AsyncAttribute,"Create"]});
+    $r.addMethod("pdfHtml2Table1Click",0,[["Sender",pas.System.$rtti["TObject"]]],null,16,{attr: [pas.JS.AsyncAttribute,"Create"]});
+    $r.addMethod("pdfjspdfve1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("jspdfshare1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
   });
 });
 rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","WEBLib.Controls","WEBLib.Forms","WEBLib.Dialogs","WEBLib.StdCtrls","WEBLib.StdCtrls","WEBLib.Buttons","WEBLib.Controls","WEBLib.ExtCtrls","WEBLib.WebCtrls","DB","WEBLib.IndexedDb","WEBLib.Menus","WEBLib.Menus"],function () {
@@ -87681,6 +87845,7 @@ rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.WebHTMLDiv1.SetTop(82);
         this.WebHTMLDiv1.SetWidth(640);
         this.WebHTMLDiv1.SetHeight(398);
+        this.WebHTMLDiv1.SetElementClassName("scrollable-div");
         this.WebHTMLDiv1.SetAlign(pas["WEBLib.Controls"].TAlign.alClient);
         this.WebHTMLDiv1.SetChildOrderEx(3);
         this.WebHTMLDiv1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
@@ -88817,7 +88982,7 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
           this.DivAyuda.FHTML.Add('<div class="card">    <!--style="width: 25rem;" -->');
           this.DivAyuda.FHTML.Add('  <div class="card-body">');
           this.DivAyuda.FHTML.Add("    <!-- Image with float-start and margin utilities -->");
-          this.DivAyuda.FHTML.Add('    <img src="https://github.com/IDSFDG/LibDigital/blob/main/img/DIRECTORIOsm.jpeg?raw=true" class="img-fluid rounded float-start me-3" ');
+          this.DivAyuda.FHTML.Add('    <img src="https://github.com/IDSFDG/LibDigital/blob/main/img/DESCRIPCION.jpeg?raw=true" class="img-fluid rounded float-start me-3" ');
           this.DivAyuda.FHTML.Add('alt="ejemplo ');
           this.DivAyuda.FHTML.Add('imagen">');
           this.DivAyuda.FHTML.Add('     <!--  <h5 class="card-title">Directorio (mis archivos) QUITAR OPCION</h5>-->');
