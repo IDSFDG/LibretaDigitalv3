@@ -87211,7 +87211,7 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.WebHTMLDiv1.SetTop(82);
         this.WebHTMLDiv1.SetWidth(640);
         this.WebHTMLDiv1.SetHeight(398);
-        this.WebHTMLDiv1.SetElementClassName("scrollable-div");
+        this.WebHTMLDiv1.SetElementClassName("container-editor");
         this.WebHTMLDiv1.SetAlign(pas["WEBLib.Controls"].TAlign.alClient);
         this.WebHTMLDiv1.SetChildOrderEx(3);
         this.WebHTMLDiv1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
@@ -87845,7 +87845,7 @@ rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.WebHTMLDiv1.SetTop(82);
         this.WebHTMLDiv1.SetWidth(640);
         this.WebHTMLDiv1.SetHeight(398);
-        this.WebHTMLDiv1.SetElementClassName("scrollable-div");
+        this.WebHTMLDiv1.SetElementClassName("container-editor");
         this.WebHTMLDiv1.SetAlign(pas["WEBLib.Controls"].TAlign.alClient);
         this.WebHTMLDiv1.SetChildOrderEx(3);
         this.WebHTMLDiv1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
