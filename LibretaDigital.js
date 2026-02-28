@@ -85286,10 +85286,9 @@ rtl.module("uListaArchivosModal",["System","SysUtils","Classes","JS","Web","WEBL
         this.panelboton.SetParentComponent(this);
         this.panelboton.SetName("panelboton");
         this.panelboton.SetLeft(0);
-        this.panelboton.SetTop(291);
+        this.panelboton.SetTop(320);
         this.panelboton.SetWidth(405);
-        this.panelboton.SetHeight(60);
-        this.panelboton.SetElementClassName("card bg-primary");
+        this.panelboton.SetHeight(31);
         this.panelboton.SetAlign(pas["WEBLib.Controls"].TAlign.alBottom);
         this.panelboton.SetChildOrderEx(1);
         this.panelboton.FElementBodyClassName = "card-body";
@@ -85303,7 +85302,7 @@ rtl.module("uListaArchivosModal",["System","SysUtils","Classes","JS","Web","WEBL
         this.paneltop.SetWidth(405);
         this.paneltop.SetHeight(49);
         this.paneltop.SetHint("Click para filtrar");
-        this.paneltop.SetElementClassName("card bg-primary");
+        this.paneltop.SetElementClassName("card bg-secondary bg-gradient text-white");
         this.paneltop.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.paneltop.SetCaption("Directorio");
         this.paneltop.SetChildOrderEx(1);
@@ -85331,11 +85330,10 @@ rtl.module("uListaArchivosModal",["System","SysUtils","Classes","JS","Web","WEBL
         this.listaArchivos2.SetLeft(0);
         this.listaArchivos2.SetTop(75);
         this.listaArchivos2.SetWidth(405);
-        this.listaArchivos2.SetHeight(210);
-        this.listaArchivos2.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
+        this.listaArchivos2.SetHeight(245);
         this.listaArchivos2.SetHeightPercent(100.000000000000000000);
         this.listaArchivos2.SetWidthPercent(100.000000000000000000);
-        this.listaArchivos2.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
+        this.listaArchivos2.SetAlign(pas["WEBLib.Controls"].TAlign.alClient);
         this.listaArchivos2.SetChildOrderEx(3);
         this.listaArchivos2.FDefaultItemClassName = "list-group-item";
         this.listaArchivos2.FDefaultItemLinkClassName = "list-group-link";
@@ -87994,7 +87992,7 @@ rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
     $r.addMethod("webBotonMenuClick",0,[["Sender",pas.System.$rtti["TObject"]]]);
   });
 });
-rtl.module("uAyuda",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","WEBLib.Controls","WEBLib.Forms","WEBLib.Dialogs","WEBLib.ExtCtrls","WEBLib.Controls","WEBLib.WebCtrls"],function () {
+rtl.module("uAyuda",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","WEBLib.Controls","WEBLib.Forms","WEBLib.Dialogs","WEBLib.ExtCtrls","WEBLib.Controls","WEBLib.WebCtrls","WEBLib.Buttons","WEBLib.StdCtrls","WEBLib.StdCtrls"],function () {
   "use strict";
   var $mod = this;
   rtl.createClass(this,"TfrmAyuda",pas["WEBLib.Forms"].TForm,function () {
@@ -88002,10 +88000,12 @@ rtl.module("uAyuda",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
       pas["WEBLib.Forms"].TForm.$init.call(this);
       this.WebHTMLDiv1 = null;
       this.WebPanel1 = null;
+      this.panelTabulatorTit = null;
     };
     this.$final = function () {
       this.WebHTMLDiv1 = undefined;
       this.WebPanel1 = undefined;
+      this.panelTabulatorTit = undefined;
       pas["WEBLib.Forms"].TForm.$final.call(this);
     };
     this.WebPanel1Click = function (Sender) {
@@ -88047,8 +88047,10 @@ rtl.module("uAyuda",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
       pas["WEBLib.Forms"].TCustomForm.LoadDFMValues.call(this);
       this.WebHTMLDiv1 = pas["WEBLib.WebCtrls"].THTMLDiv.$create("Create$2",["divayuda"]);
       this.WebPanel1 = pas["WEBLib.ExtCtrls"].TPanel.$create("Create$1",[this]);
+      this.panelTabulatorTit = pas["WEBLib.ExtCtrls"].TPanel.$create("Create$1",[this]);
       this.WebHTMLDiv1.BeforeLoadDFMValues();
       this.WebPanel1.BeforeLoadDFMValues();
+      this.panelTabulatorTit.BeforeLoadDFMValues();
       try {
         this.SetName("frmAyuda");
         this.SetWidth(640);
@@ -88065,10 +88067,10 @@ rtl.module("uAyuda",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
         this.WebHTMLDiv1.SetParentComponent(this);
         this.WebHTMLDiv1.SetName("WebHTMLDiv1");
         this.WebHTMLDiv1.SetLeft(0);
-        this.WebHTMLDiv1.SetTop(0);
+        this.WebHTMLDiv1.SetTop(41);
         this.WebHTMLDiv1.SetWidth(640);
-        this.WebHTMLDiv1.SetHeight(448);
-        this.WebHTMLDiv1.SetElementClassName('text-wrap style="width: 150px"  border border-4');
+        this.WebHTMLDiv1.SetHeight(407);
+        this.WebHTMLDiv1.SetElementClassName('text-wrap style="width: 150px; height:300px;"  border border-4');
         this.WebHTMLDiv1.SetAlign(pas["WEBLib.Controls"].TAlign.alClient);
         this.WebHTMLDiv1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebHTMLDiv1.SetRole("");
@@ -88085,10 +88087,25 @@ rtl.module("uAyuda",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
         this.WebPanel1.FElementBodyClassName = "card-body";
         this.WebPanel1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebPanel1.SetTabOrder(1);
+        this.WebPanel1.SetVisible(false);
         this.SetEvent$1(this.WebPanel1,this,"OnClick","WebPanel1Click");
+        this.panelTabulatorTit.SetParentComponent(this);
+        this.panelTabulatorTit.SetName("panelTabulatorTit");
+        this.panelTabulatorTit.SetLeft(0);
+        this.panelTabulatorTit.SetTop(0);
+        this.panelTabulatorTit.SetWidth(640);
+        this.panelTabulatorTit.SetHeight(41);
+        this.panelTabulatorTit.SetElementClassName("card bg-secondary bg-gradient text-white");
+        this.panelTabulatorTit.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
+        this.panelTabulatorTit.SetCaption("Descripcion Libreta Digital");
+        this.panelTabulatorTit.SetChildOrderEx(2);
+        this.panelTabulatorTit.FElementBodyClassName = "card-body";
+        this.panelTabulatorTit.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.panelTabulatorTit.SetTabOrder(2);
       } finally {
         this.WebHTMLDiv1.AfterLoadDFMValues();
         this.WebPanel1.AfterLoadDFMValues();
+        this.panelTabulatorTit.AfterLoadDFMValues();
       };
     };
     rtl.addIntf(this,pas["WEBLib.Controls"].IControl);
@@ -88096,6 +88113,7 @@ rtl.module("uAyuda",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
     var $r = this.$rtti;
     $r.addField("WebHTMLDiv1",pas["WEBLib.WebCtrls"].$rtti["THTMLDiv"]);
     $r.addField("WebPanel1",pas["WEBLib.ExtCtrls"].$rtti["TPanel"]);
+    $r.addField("panelTabulatorTit",pas["WEBLib.ExtCtrls"].$rtti["TPanel"]);
     $r.addMethod("WebPanel1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebFormCreate",0,[["Sender",pas.System.$rtti["TObject"]]]);
   });
@@ -88908,7 +88926,7 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
           this.DivTabular.FHTML.Add("    <!-- Image with float-start and margin utilities -->");
           this.DivTabular.FHTML.Add('    <img src="https://github.com/IDSFDG/LibDigital/blob/main/img/HTABsm.jpeg?raw=true" class="img-fluid rounded float-start me-3" alt="ejemplo ');
           this.DivTabular.FHTML.Add('imagen">');
-          this.DivTabular.FHTML.Add('    <h5 class="card-title">Hoja Tabular con columnas y renglones</h5>');
+          this.DivTabular.FHTML.Add('    <h5 class="card-title text-wrap">Hoja Tabular con columnas y renglones</h5>');
           this.DivTabular.FHTML.Add('        <p class="card-text text-wrap">Registro en formato tabular tipo Excel, con información columnas y renglones registro de información de manera');
           this.DivTabular.FHTML.Add(" tabular, encabezado columnas, formulas etc.              </p>");
           this.DivTabular.FHTML.Add(' <!--   <p class="card-text">Additional paragraph to show continued text flow below the image as well, if the content is long enough.</p>-->');
