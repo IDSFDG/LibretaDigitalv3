@@ -91036,11 +91036,6 @@ rtl.module("program",["System","WEBLib.Forms","WEBLib.Forms","uFormaMenu","uLibr
     pas["WEBLib.Forms"].Application.FMainFormOnTaskBar = true;
     window.history.pushState(null, '', 'LibretaDigital.html#frmMenu');
     pas["WEBLib.Forms"].Application.FAutoFormRoute = true;
-    pas["WEBLib.Forms"].Application.CreateForm(pas.Unit1.TForm1,{p: pas.Unit1, get: function () {
-        return this.p.Form1;
-      }, set: function (v) {
-        this.p.Form1 = v;
-      }});
     pas["WEBLib.Forms"].Application.CreateForm(pas.uSideMenu2.TfrmSideMenu2,{p: pas.uSideMenu2, get: function () {
         return this.p.frmSideMenu2;
       }, set: function (v) {
