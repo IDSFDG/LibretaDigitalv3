@@ -86930,6 +86930,46 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
        ;
       };
     };
+    this.DescargarTextoEditor = function () {
+      var EditorTexto = "";
+      function downloadText(content, fileName) {
+          const blob = new Blob([content], { type: 'text/plain' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = fileName; // File will be downloaded with this name
+          a.click();
+          URL.revokeObjectURL(url); // Free up memory
+      }
+      
+      //----------------------------------------------------------------
+      
+      // 1. Get the DOM element that contains the Quill editor
+      const editorContainer = document.getElementById('editor');
+      
+      // 2. Use Quill.find() to retrieve the instance
+      const quillInstance = Quill.find(editorContainer);
+      
+      // Now you can use the quillInstance API, e.g., to get contents
+      if (quillInstance) {
+          const delta = quillInstance.getContents();
+          console.log(delta);
+      
+      
+      
+      // Get content as an HTML string
+      const htmlContent = quillInstance.root.innerHTML;
+      console.log('HTML content:', htmlContent);
+          //  long = htmlContent.length;
+      
+         //   var textLength = quillInstance.getLength() - 1;
+         //   long=textLength;
+            EditorTexto= htmlContent;
+       if (confirm("Desa descargar en un archivo de texto ?")) {
+            downloadText(htmlContent, "miArchivo.txt");
+       }
+      };
+    };
     this.LoadDFMValues = function () {
       pas["WEBLib.Forms"].TCustomForm.LoadDFMValues.call(this);
       this.panelEditorTit = pas["WEBLib.ExtCtrls"].TPanel.$create("Create$1",[this]);
@@ -88257,6 +88297,7 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
           }, set: function (v) {
             this.p.strListaArchivos = v;
           }});
+        $impl.newform2.DescargarTextoEditor();
         $impl.newform2 = null;
       };
       if ($impl.newForm3 != null) {
