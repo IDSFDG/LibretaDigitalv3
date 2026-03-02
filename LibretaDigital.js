@@ -86575,6 +86575,7 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.divElement = null;
       this.jspdfver1 = null;
       this.jspdfshare1 = null;
+      this.WebFilePicker1 = null;
     };
     this.$final = function () {
       this.panelEditorTit = undefined;
@@ -86610,6 +86611,7 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.divElement = undefined;
       this.jspdfver1 = undefined;
       this.jspdfshare1 = undefined;
+      this.WebFilePicker1 = undefined;
       pas["WEBLib.Forms"].TForm.$final.call(this);
     };
     this.WebFormCreate = function (Sender) {
@@ -86854,6 +86856,31 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       };
       generateAndSharePDF3(3);
     };
+    this.Abrir1Click = function (Sender) {
+      this.WebFilePicker1.SetVisible(true);
+    };
+    this.WebFilePicker1Change = function (Sender) {
+      this.WebFilePicker1.FFiles.GetItem$1(0).GetFileAsText();
+    };
+    this.WebFilePicker1GetFileAsText = function (Sender, AFileIndex, AText) {
+      var EditorTexto = "";
+      EditorTexto = AText;
+      this.WebFilePicker1.SetVisible(false);
+      // 1. Get the DOM element that contains the Quill editor
+      const editorContainer = document.getElementById('editor');
+      
+      // 2. Use Quill.find() to retrieve the instance
+      const quillInstance = Quill.find(editorContainer);
+      
+      // Now you can use the quillInstance API, e.g., to set contents
+      if (quillInstance) {
+      
+       //quillInstance.root.innerHTML="agregar contenido";
+       quillInstance.root.innerHTML = EditorTexto;
+      
+       ;
+      };
+    };
     this.GrabarEditor = function (WIndexedDbClientLibreta, strListaArchivos) {
       var long = 0;
       var mr = 0;
@@ -86982,6 +87009,7 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.WebButton2 = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
       this.WebButton3 = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
       this.divElement = pas["WEBLib.WebCtrls"].THTMLDiv.$create("Create$2",["elementDiv"]);
+      this.WebFilePicker1 = pas["WEBLib.Dialogs"].TFilePicker.$create("Create$1",[this]);
       this.DivTop = pas["WEBLib.WebCtrls"].THTMLDiv.$create("Create$1",[this]);
       this.divtoolbar = pas["WEBLib.WebCtrls"].THTMLDiv.$create("Create$1",[this]);
       this.WebHTMLDiv1 = pas["WEBLib.WebCtrls"].THTMLDiv.$create("Create$1",[this]);
@@ -87015,6 +87043,7 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.WebButton2.BeforeLoadDFMValues();
       this.WebButton3.BeforeLoadDFMValues();
       this.divElement.BeforeLoadDFMValues();
+      this.WebFilePicker1.BeforeLoadDFMValues();
       this.DivTop.BeforeLoadDFMValues();
       this.divtoolbar.BeforeLoadDFMValues();
       this.WebHTMLDiv1.BeforeLoadDFMValues();
@@ -87174,8 +87203,8 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.SetEvent$1(this.WebButton2,this,"OnClick","WebButton2Click");
         this.WebButton3.SetParentComponent(this.panelEditorTit);
         this.WebButton3.SetName("WebButton3");
-        this.WebButton3.SetLeft(121);
-        this.WebButton3.SetTop(18);
+        this.WebButton3.SetLeft(72);
+        this.WebButton3.SetTop(21);
         this.WebButton3.SetWidth(96);
         this.WebButton3.SetHeight(25);
         this.WebButton3.SetCaption("PDF");
@@ -87189,14 +87218,27 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.SetEvent$1(this.WebButton3,this,"OnClick","WebButton3Click");
         this.divElement.SetParentComponent(this.panelEditorTit);
         this.divElement.SetName("divElement");
-        this.divElement.SetLeft(382);
-        this.divElement.SetTop(2);
-        this.divElement.SetWidth(100);
+        this.divElement.SetLeft(222);
+        this.divElement.SetTop(3);
+        this.divElement.SetWidth(58);
         this.divElement.SetHeight(41);
         this.divElement.SetChildOrderEx(8);
         this.divElement.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.divElement.SetRole("");
         this.divElement.SetVisible(false);
+        this.WebFilePicker1.SetParentComponent(this.panelEditorTit);
+        this.WebFilePicker1.SetName("WebFilePicker1");
+        this.WebFilePicker1.SetLeft(376);
+        this.WebFilePicker1.SetTop(0);
+        this.WebFilePicker1.SetWidth(161);
+        this.WebFilePicker1.SetHeight(49);
+        this.WebFilePicker1.SetAccept(".txt");
+        this.WebFilePicker1.SetAlign(pas["WEBLib.Controls"].TAlign.alRight);
+        this.WebFilePicker1.SetChildOrderEx(1);
+        this.WebFilePicker1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.WebFilePicker1.SetVisible(false);
+        this.SetEvent$1(this.WebFilePicker1,this,"OnChange","WebFilePicker1Change");
+        this.SetEvent$1(this.WebFilePicker1,this,"OnGetFileAsText","WebFilePicker1GetFileAsText");
         this.DivTop.SetParentComponent(this);
         this.DivTop.SetName("DivTop");
         this.DivTop.SetLeft(0);
@@ -87305,7 +87347,7 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.Abrir1.SetParentComponent(this.WebPopupMenu1);
         this.Abrir1.SetName("Abrir1");
         this.Abrir1.SetCaption("Abrir");
-        this.Abrir1.FVisible = false;
+        this.SetEvent$1(this.Abrir1,this,"OnClick","Abrir1Click");
         this.Guardar1.SetParentComponent(this.WebPopupMenu1);
         this.Guardar1.SetName("Guardar1");
         this.Guardar1.SetCaption("Guardar");
@@ -87353,6 +87395,7 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.WebButton2.AfterLoadDFMValues();
         this.WebButton3.AfterLoadDFMValues();
         this.divElement.AfterLoadDFMValues();
+        this.WebFilePicker1.AfterLoadDFMValues();
         this.DivTop.AfterLoadDFMValues();
         this.divtoolbar.AfterLoadDFMValues();
         this.WebHTMLDiv1.AfterLoadDFMValues();
@@ -87414,6 +87457,7 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
     $r.addField("divElement",pas["WEBLib.WebCtrls"].$rtti["THTMLDiv"]);
     $r.addField("jspdfver1",pas["WEBLib.Menus"].$rtti["TMenuItem"]);
     $r.addField("jspdfshare1",pas["WEBLib.Menus"].$rtti["TMenuItem"]);
+    $r.addField("WebFilePicker1",pas["WEBLib.Dialogs"].$rtti["TFilePicker"]);
     $r.addMethod("WebFormCreate",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebButton1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebButton2Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
@@ -87422,6 +87466,9 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
     $r.addMethod("pdfHtml2Table1Click",0,[["Sender",pas.System.$rtti["TObject"]]],null,16,{attr: [pas.JS.AsyncAttribute,"Create"]});
     $r.addMethod("pdfjspdfve1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("jspdfshare1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("Abrir1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("WebFilePicker1Change",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("WebFilePicker1GetFileAsText",0,[["Sender",pas.System.$rtti["TObject"]],["AFileIndex",rtl.longint],["AText",rtl.string]]);
   });
 });
 rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","WEBLib.Controls","WEBLib.Forms","WEBLib.Dialogs","WEBLib.StdCtrls","WEBLib.StdCtrls","WEBLib.Buttons","WEBLib.Controls","WEBLib.ExtCtrls","WEBLib.WebCtrls","DB","WEBLib.IndexedDb","WEBLib.Menus","WEBLib.Menus"],function () {
