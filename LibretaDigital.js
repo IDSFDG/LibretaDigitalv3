@@ -86857,7 +86857,7 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       generateAndSharePDF3(3);
     };
     this.Abrir1Click = function (Sender) {
-      this.WebFilePicker1.SetVisible(true);
+      this.WebFilePicker1.GetElementHandle().click();
     };
     this.WebFilePicker1Change = function (Sender) {
       this.WebFilePicker1.FFiles.GetItem$1(0).GetFileAsText();
@@ -86866,6 +86866,7 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       var EditorTexto = "";
       EditorTexto = AText;
       this.WebFilePicker1.SetVisible(false);
+      if (EditorTexto.length === 0) return;
       // 1. Get the DOM element that contains the Quill editor
       const editorContainer = document.getElementById('editor');
       
@@ -87230,10 +87231,9 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.WebFilePicker1.SetName("WebFilePicker1");
         this.WebFilePicker1.SetLeft(376);
         this.WebFilePicker1.SetTop(0);
-        this.WebFilePicker1.SetWidth(161);
+        this.WebFilePicker1.SetWidth(129);
         this.WebFilePicker1.SetHeight(49);
         this.WebFilePicker1.SetAccept(".txt");
-        this.WebFilePicker1.SetAlign(pas["WEBLib.Controls"].TAlign.alRight);
         this.WebFilePicker1.SetChildOrderEx(1);
         this.WebFilePicker1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
         this.WebFilePicker1.SetVisible(false);
