@@ -90174,7 +90174,848 @@ rtl.module("uRichEditor3",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
   });
   this.frmRichEditor3 = null;
 });
-rtl.module("program",["System","WEBLib.Forms","WEBLib.Forms","uFormaMenu","uLibretaResponsiveT","editorDiv","uRichEditor","uEditor","uLibretaResponsive","uLibretaResponsiveR","uSideMenu2","uSideMenu","uListaArchivos","uRichEditor2","uHojaTabular","uInicioMenu","uListaArchivosModal","uRichEditor3","uRichEditor5","uAyuda","uRichEditor4"],function () {
+rtl.module("jsdelphisystem",["System"],function () {
+  "use strict";
+  var $mod = this;
+});
+rtl.module("WEBLib.LocalFiles",["System","Classes","SysUtils","JS","Web","jsdelphisystem"],function () {
+  "use strict";
+  var $mod = this;
+  this.$rtti.$RefToProcVar("TOpenTextFileProc",{procsig: rtl.newTIProcSig([["AText",rtl.string]])});
+  this.$rtti.$RefToProcVar("TOpenBinaryFileProc",{procsig: rtl.newTIProcSig([["AValue",pas.JS.$rtti["TJSArrayBuffer"]]])});
+  this.$rtti.$RefToProcVar("TSaveFileProc",{procsig: rtl.newTIProcSig([])});
+  rtl.createClass(this,"TFileFilterItem",pas.Classes.TCollectionItem,function () {
+    this.$init = function () {
+      pas.Classes.TCollectionItem.$init.call(this);
+      this.FExtensions = null;
+      this.FMimeType = "";
+      this.FDescription = "";
+    };
+    this.$final = function () {
+      this.FExtensions = undefined;
+      pas.Classes.TCollectionItem.$final.call(this);
+    };
+    this.SetExtensions = function (Value) {
+      this.FExtensions.Assign(Value);
+    };
+    this.GetExtensions = function () {
+      var Result = null;
+      Result = this.FExtensions;
+      return Result;
+    };
+    this.Create$1 = function (ACollection) {
+      pas.Classes.TCollectionItem.Create$1.apply(this,arguments);
+      this.FExtensions = pas.Classes.TStringList.$create("Create$1");
+      return this;
+    };
+    this.Destroy = function () {
+      rtl.free(this,"FExtensions");
+      pas.Classes.TCollectionItem.Destroy.call(this);
+    };
+    var $r = this.$rtti;
+    $r.addMethod("Create$1",2,[["ACollection",pas.Classes.$rtti["TCollection"]]]);
+    $r.addProperty("Description",0,rtl.string,"FDescription","FDescription");
+    $r.addProperty("MIMEType",0,rtl.string,"FMimeType","FMimeType");
+    $r.addProperty("Extensions",3,pas.Classes.$rtti["TStrings"],"GetExtensions","SetExtensions");
+  });
+  rtl.createClass(this,"TFileFilter",pas.Classes.TOwnedCollection,function () {
+    this.GetItems = function (Index) {
+      var Result = null;
+      Result = this.GetItem(Index);
+      return Result;
+    };
+    this.SetItems = function (Index, Value) {
+      this.SetItem(Index,Value);
+    };
+    this.GetFilterString = function () {
+      var Result = "";
+      var i = 0;
+      var j = 0;
+      var ext = "";
+      var mext = "";
+      Result = "";
+      if (this.GetCount() > 0) {
+        Result = "[";
+        for (var $l = 0, $end = this.GetCount() - 1; $l <= $end; $l++) {
+          i = $l;
+          if (i > 0) Result = Result + ",";
+          Result = Result + "{";
+          if (this.GetItems(i).GetExtensions().GetCount() > 0) {
+            ext = "";
+            for (var $l1 = 0, $end1 = this.GetItems(i).GetExtensions().GetCount() - 1; $l1 <= $end1; $l1++) {
+              j = $l1;
+              if (j > 0) ext = ext + ",";
+              mext = this.GetItems(i).GetExtensions().Get(j);
+              if (pas.System.Pos("*.",mext) > 0) mext = pas.System.Copy(mext,2,mext.length);
+              if ((mext === "*.*") || (mext === ".*")) continue;
+              ext = ext + '"' + mext + '"';
+            };
+            if (ext !== "") Result = Result + '"description": "' + this.GetItems(i).FDescription + '", "accept": {"' + this.GetItems(i).FMimeType + '":[' + ext + "]}";
+          };
+          Result = Result + "}";
+        };
+        Result = Result + "]";
+      };
+      return Result;
+    };
+    this.GetFilterObject = function () {
+      var Result = null;
+      var opts = "";
+      var all = "";
+      var jo = null;
+      if (this.GetCount() > 0) {
+        if (this.HasAllFiles()) {
+          all = "false"}
+         else all = "true";
+        opts = '{ "types":' + this.GetFilterString() + ',"excludeAcceptAllOption": ' + all + ',"multiple": false }';
+      };
+      if (opts !== "") {
+        jo = null;
+        if (opts != "") {
+          jo = JSON.parse(opts); };
+      };
+      Result = jo;
+      return Result;
+    };
+    this.HasAllFiles = function () {
+      var Result = false;
+      var i = 0;
+      var j = 0;
+      Result = false;
+      for (var $l = 0, $end = this.GetCount() - 1; $l <= $end; $l++) {
+        i = $l;
+        for (var $l1 = 0, $end1 = this.GetItems(i).GetExtensions().GetCount() - 1; $l1 <= $end1; $l1++) {
+          j = $l1;
+          if ((this.GetItems(i).GetExtensions().Get(j) === "*") || (this.GetItems(i).GetExtensions().Get(j) === "*.*")) {
+            Result = true;
+            break;
+          };
+        };
+      };
+      return Result;
+    };
+    this.Create$3 = function (AOwner) {
+      pas.Classes.TOwnedCollection.Create$2.call(this,AOwner,$mod.TFileFilterItem);
+      return this;
+    };
+    this.Add$1 = function () {
+      var Result = null;
+      Result = pas.Classes.TCollection.Add.call(this);
+      return Result;
+    };
+    this.Add$2 = function (ADescription, AMIMEType, AExtensions) {
+      var Result = null;
+      Result = this.Add$1();
+      Result.FDescription = ADescription;
+      Result.FMimeType = AMIMEType;
+      Result.GetExtensions().SetCommaText(AExtensions);
+      return Result;
+    };
+    this.Insert$1 = function (Index) {
+      var Result = null;
+      Result = pas.Classes.TCollection.Insert.call(this,Index);
+      return Result;
+    };
+    var $r = this.$rtti;
+    $r.addMethod("Create$3",2,[["AOwner",pas.Classes.$rtti["TPersistent"]]]);
+  });
+  rtl.createClass(this,"TTextFile",pas.Classes.TComponent,function () {
+    this.$init = function () {
+      pas.Classes.TComponent.$init.call(this);
+      this.FFileHandle = undefined;
+      this.FText = "";
+      this.FOnFileSave = null;
+      this.FOnFileOpen = null;
+      this.FFileName = "";
+      this.FFilter = null;
+    };
+    this.$final = function () {
+      this.FOnFileSave = undefined;
+      this.FOnFileOpen = undefined;
+      this.FFilter = undefined;
+      pas.Classes.TComponent.$final.call(this);
+    };
+    this.DoOpenFile = function (AHandle, Value, AOpenFile) {
+      this.FFileHandle = AHandle;
+      this.FFileName = AHandle.name;
+      this.FText = Value;
+      if (this.FOnFileOpen != null) this.FOnFileOpen(this);
+      if (AOpenFile != null) AOpenFile(Value);
+    };
+    this.DoSaveFile = function (ASaveFile) {
+      if (this.FOnFileSave != null) this.FOnFileSave(this);
+      if (ASaveFile != null) ASaveFile();
+    };
+    this.DoSaveAsFile = function (AHandle, ASaveFile) {
+      this.FFileHandle = AHandle;
+      this.SaveFile$1(ASaveFile);
+    };
+    this.Create$1 = function (AOwner) {
+      pas.Classes.TComponent.Create$1.apply(this,arguments);
+      this.FFilter = $mod.TFileFilter.$create("Create$3",[this]);
+      if (1 < 0) {
+        this.DoOpenFile(0,"",null);
+        this.DoSaveFile(null);
+        this.DoSaveAsFile(0,null);
+      };
+      return this;
+    };
+    this.Destroy = function () {
+      rtl.free(this,"FFilter");
+      pas.Classes.TComponent.Destroy.call(this);
+    };
+    this.Open = function () {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.OpenFile$1(function (AText) {
+          ASuccess(AText);
+        });
+      });
+      return Result;
+    };
+    this.Save = function () {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.SaveFile$1(function () {
+          ASuccess(true);
+        });
+      });
+      return Result;
+    };
+    this.SaveAs = function () {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.SaveAsFile$1(function () {
+          ASuccess(true);
+        });
+      });
+      return Result;
+    };
+    this.OpenFile = function () {
+      this.OpenFile$1(null);
+    };
+    this.OpenFile$1 = function (AOpenFile) {
+      var jo = null;
+      jo = this.FFilter.GetFilterObject();
+      let fileHandle;
+      async function asyncCall(afile) {
+        [fileHandle] = await window.showOpenFilePicker(jo);
+        const file = await fileHandle.getFile();
+        const contents = await file.text();
+        afile.DoOpenFile(fileHandle, contents, AOpenFile);
+        }
+      asyncCall(this);
+    };
+    this.SaveFile = function () {
+      this.SaveFile$1(null);
+    };
+    this.SaveFile$1 = function (ASaveFile) {
+      if (!pas.System.Assigned(this.FFileHandle)) throw pas.SysUtils.Exception.$create("Create$1",["File handle not assigned"]);
+      async function writeFile(afile, fileHandle, contents, aproc) {
+      // Create a FileSystemWritableFileStream to write to.
+      const writable = await fileHandle.createWritable();
+      // Write the contents of the file to the stream.
+      await writable.write(contents);
+      // Close the file and write the contents to disk.
+      await writable.close();
+      afile.DoSaveFile(aproc);
+      }
+      writeFile(this, this.FFileHandle, this.FText, ASaveFile);
+    };
+    this.SaveAsFile = function () {
+      this.SaveAsFile$1(null);
+    };
+    this.SaveAsFile$1 = function (ASaveFile) {
+      var jo = null;
+      jo = this.FFilter.GetFilterObject();
+      async function getNewFileHandle(afile, aproc) {
+        const options = {
+          types: [
+           {
+            description: 'Text Files',
+            accept: { 'text/plain': ['.txt'],
+             },
+            },
+           ],
+         };
+      const handle = await window.showSaveFilePicker(jo);
+      afile.DoSaveAsFile(handle, aproc);
+      }
+      getNewFileHandle(this, ASaveFile);
+      if (1 < 0) {
+        this.DoOpenFile(null,"",null);
+        this.DoSaveFile(null);
+        this.DoSaveAsFile(null,null);
+      };
+    };
+    rtl.addIntf(this,pas.System.IUnknown);
+    var $r = this.$rtti;
+    $r.addMethod("Create$1",2,[["AOwner",pas.Classes.$rtti["TComponent"]]]);
+    $r.addProperty("OnFileOpen",0,pas.Classes.$rtti["TNotifyEvent"],"FOnFileOpen","FOnFileOpen");
+    $r.addProperty("OnFileSave",0,pas.Classes.$rtti["TNotifyEvent"],"FOnFileSave","FOnFileSave");
+  });
+  rtl.createClass(this,"TLocalTextFile",this.TTextFile,function () {
+    rtl.addIntf(this,pas.System.IUnknown);
+  });
+  rtl.createClass(this,"TWebLocalTextFile",this.TTextFile,function () {
+    rtl.addIntf(this,pas.System.IUnknown);
+    var $r = this.$rtti;
+    $r.addProperty("Filter",0,$mod.$rtti["TFileFilter"],"FFilter","");
+  });
+  rtl.createClass(this,"TBinaryFile",pas.Classes.TComponent,function () {
+    this.$init = function () {
+      pas.Classes.TComponent.$init.call(this);
+      this.FFileHandle = undefined;
+      this.FData = null;
+      this.FOnFileSave = null;
+      this.FOnFileOpen = null;
+      this.FFileName = "";
+      this.FFilter = null;
+    };
+    this.$final = function () {
+      this.FData = undefined;
+      this.FOnFileSave = undefined;
+      this.FOnFileOpen = undefined;
+      this.FFilter = undefined;
+      pas.Classes.TComponent.$final.call(this);
+    };
+    this.DoOpenFile = function (AHandle, Value, AOpenFile) {
+      this.FFileHandle = AHandle;
+      this.FFileName = AHandle.name;
+      this.FData = Value;
+      if (this.FOnFileOpen != null) this.FOnFileOpen(this);
+      if (AOpenFile != null) AOpenFile(Value);
+    };
+    this.DoSaveFile = function (ASaveFile) {
+      if (this.FOnFileSave != null) this.FOnFileSave(this);
+      if (ASaveFile != null) ASaveFile();
+    };
+    this.DoSaveAsFile = function (AHandle, ASaveFile) {
+      this.FFileHandle = AHandle;
+      this.SaveFile$1(ASaveFile);
+    };
+    this.Create$1 = function (AOwner) {
+      pas.Classes.TComponent.Create$1.apply(this,arguments);
+      this.FFilter = $mod.TFileFilter.$create("Create$3",[this]);
+      if (1 < 0) {
+        this.DoOpenFile(0,null,null);
+        this.DoSaveFile(null);
+        this.DoSaveAsFile(0,null);
+      };
+      return this;
+    };
+    this.Destroy = function () {
+      rtl.free(this,"FFilter");
+      pas.Classes.TComponent.Destroy.call(this);
+    };
+    this.Open = function () {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.OpenFile$1(function (AValue) {
+          ASuccess(AValue);
+        });
+      });
+      return Result;
+    };
+    this.Open$1 = function (AFileHandle) {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.OpenFile$2(AFileHandle,function (AValue) {
+          ASuccess(AValue);
+        });
+      });
+      return Result;
+    };
+    this.Save = function () {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.SaveFile$1(function () {
+          ASuccess(true);
+        });
+      });
+      return Result;
+    };
+    this.SaveAs = function () {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.SaveAsFile$1(function () {
+          ASuccess(true);
+        });
+      });
+      return Result;
+    };
+    this.OpenFile = function () {
+      this.OpenFile$1(null);
+    };
+    this.OpenFile$1 = function (AOpenFile) {
+      var jo = null;
+      jo = this.FFilter.GetFilterObject();
+      let fileHandle;
+      async function asyncCall(afile) {
+        [fileHandle] = await window.showOpenFilePicker(jo);
+        const file = await fileHandle.getFile();
+        const contents = await file.arrayBuffer();
+        afile.DoOpenFile(fileHandle, contents, AOpenFile);
+        }
+      asyncCall(this);
+      if (1 < 0) {
+        this.DoOpenFile(null,null,null);
+        this.DoSaveFile(null);
+        this.DoSaveAsFile(null,null);
+      };
+    };
+    this.OpenFile$2 = function (AFileHandle, AOpenFile) {
+      async function asyncCall(afile) {
+        const file = await AFileHandle.getFile();
+        const contents = await file.arrayBuffer();
+        afile.DoOpenFile(AFileHandle, contents, AOpenFile);
+        }
+      asyncCall(this);
+    };
+    this.SaveFile = function () {
+      this.SaveFile$1(null);
+    };
+    this.SaveFile$1 = function (ASaveFile) {
+      if (!pas.System.Assigned(this.FFileHandle)) throw pas.SysUtils.Exception.$create("Create$1",["File handle not assigned"]);
+      async function writeFile(afile, fileHandle, contents, aproc) {
+      // Create a FileSystemWritableFileStream to write to.
+      const writable = await fileHandle.createWritable();
+      // Write the contents of the file to the stream.
+      await writable.write(contents);
+      // Close the file and write the contents to disk.
+      await writable.close();
+      afile.DoSaveFile(aproc);
+      }
+      writeFile(this, this.FFileHandle, this.FData, ASaveFile);
+    };
+    this.SaveAsFile = function () {
+      this.SaveAsFile$1(null);
+    };
+    this.SaveAsFile$1 = function (ASaveFile) {
+      var jo = null;
+      jo = this.FFilter.GetFilterObject();
+      async function getNewFileHandle(afile, aproc) {
+      const handle = await window.showSaveFilePicker(jo);
+      afile.DoSaveAsFile(handle, aproc);
+      }
+      getNewFileHandle(this, ASaveFile);
+    };
+    this.LoadStream = function (Stream) {
+      var $Self = this;
+      var Result = null;
+      var b = [];
+      var l = 0;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.OpenFile$1(function (AValue) {
+          b = pas.Classes.TMemoryStream.MemoryToBytes(AValue);
+          l = AValue.byteLength;
+          Stream.Write$1(b,0,l);
+          ASuccess(true);
+        });
+      });
+      return Result;
+    };
+    this.SaveStream = function (Stream) {
+      var $Self = this;
+      var Result = null;
+      this.FData = Stream.FMemory;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.SaveFile$1(function () {
+          ASuccess(true);
+        });
+      });
+      return Result;
+    };
+    rtl.addIntf(this,pas.System.IUnknown);
+    var $r = this.$rtti;
+    $r.addMethod("Create$1",2,[["AOwner",pas.Classes.$rtti["TComponent"]]]);
+    $r.addProperty("OnFileOpen",0,pas.Classes.$rtti["TNotifyEvent"],"FOnFileOpen","FOnFileOpen");
+    $r.addProperty("OnFileSave",0,pas.Classes.$rtti["TNotifyEvent"],"FOnFileSave","FOnFileSave");
+  });
+  rtl.createClass(this,"TLocalBinaryFile",this.TBinaryFile,function () {
+    rtl.addIntf(this,pas.System.IUnknown);
+  });
+  rtl.createClass(this,"TWebLocalBinaryFile",this.TBinaryFile,function () {
+    rtl.addIntf(this,pas.System.IUnknown);
+    var $r = this.$rtti;
+    $r.addProperty("Filter",0,$mod.$rtti["TFileFilter"],"FFilter","");
+  });
+  rtl.recNewT(this,"TFileSystemFileHandle",function () {
+    this.Kind = "";
+    this.Name = "";
+    this.$eq = function (b) {
+      return (this.Kind === b.Kind) && (this.Name === b.Name);
+    };
+    this.$assign = function (s) {
+      this.Kind = s.Kind;
+      this.Name = s.Name;
+      return this;
+    };
+    var $r = $mod.$rtti.$Record("TFileSystemFileHandle",{});
+    $r.addField("Kind",rtl.string);
+    $r.addField("Name",rtl.string);
+  });
+  rtl.recNewT(this,"TFileObject",function () {
+    this.Name = "";
+    this.Lastmodfieddate = "";
+    this.Size = 0;
+    this.Fileobject = undefined;
+    this.$eq = function (b) {
+      return (this.Name === b.Name) && (this.Lastmodfieddate === b.Lastmodfieddate) && (this.Size === b.Size) && (this.Fileobject === b.Fileobject);
+    };
+    this.$assign = function (s) {
+      this.Name = s.Name;
+      this.Lastmodfieddate = s.Lastmodfieddate;
+      this.Size = s.Size;
+      this.Fileobject = s.Fileobject;
+      return this;
+    };
+    var $r = $mod.$rtti.$Record("TFileObject",{});
+    $r.addField("Name",rtl.string);
+    $r.addField("Lastmodfieddate",rtl.string);
+    $r.addField("Size",rtl.longint);
+    $r.addField("Fileobject",rtl.jsvalue);
+  });
+  this.$rtti.$DynArray("TFileSystemFileHandleArray",{eltype: this.$rtti["TFileSystemFileHandle"]});
+  this.$rtti.$RefToProcVar("TOpenFolderProc",{procsig: rtl.newTIProcSig([])});
+  this.$rtti.$RefToProcVar("TGetFileProc",{procsig: rtl.newTIProcSig([["AFileHandle",this.$rtti["TFileObject"]]])});
+  this.$rtti.$RefToProcVar("TGetFileHandleProc",{procsig: rtl.newTIProcSig([["AFileHandle",rtl.jsvalue]])});
+  this.$rtti.$RefToProcVar("TGetFolderProc",{procsig: rtl.newTIProcSig([["AFolderHandle",rtl.jsvalue]])});
+  rtl.createClass(this,"TFolder",pas.Classes.TComponent,function () {
+    this.$init = function () {
+      pas.Classes.TComponent.$init.call(this);
+      this.FFileArray = [];
+      this.FFolder = undefined;
+      this.FOnFolderOpen = null;
+    };
+    this.$final = function () {
+      this.FFileArray = undefined;
+      this.FOnFolderOpen = undefined;
+      pas.Classes.TComponent.$final.call(this);
+    };
+    this.DoGetFile = function (AFileHandle, AProc) {
+      var LFileObject = $mod.TFileObject.$new();
+      if (AProc != null) {
+        LFileObject.Name = AFileHandle.name;
+        LFileObject.Lastmodfieddate = AFileHandle.lastModifiedDate.toString();
+        LFileObject.Size = AFileHandle.size;
+        LFileObject.Fileobject = AFileHandle;
+        AProc($mod.TFileObject.$clone(LFileObject));
+      };
+    };
+    this.DoGetFileHandle = function (AFileHandle, AProc) {
+      if (AProc != null) {
+        AProc(AFileHandle);
+      };
+    };
+    this.DoListFile = function (AFile) {
+      var fh = $mod.TFileSystemFileHandle.$new();
+      this.FFileArray = rtl.arraySetLength(this.FFileArray,$mod.TFileSystemFileHandle,rtl.length(this.FFileArray) + 1);
+      fh.$assign(this.FFileArray[rtl.length(this.FFileArray) - 1]);
+      fh.Kind = AFile.kind;
+      fh.Name = AFile.name;
+      this.FFileArray[rtl.length(this.FFileArray) - 1].$assign(fh);
+    };
+    this.DoGetFolder = function (AFolder) {
+      this.FFolder = AFolder;
+    };
+    this.DoOpenFolder = function (AOpenFolder) {
+      if (this.FOnFolderOpen != null) this.FOnFolderOpen(this);
+      if (AOpenFolder != null) AOpenFolder();
+    };
+    this.DoGetFolderHandle = function (AFolder, GetFolder) {
+      if (GetFolder != null) GetFolder(AFolder);
+    };
+    this.DoCreateFolder = function (AName, AProc) {
+      async function MakeFolder(afolder,name) {
+        const newDirectoryHandle = await afolder.getDirectoryHandle(name, { create: true,} );
+        AProc(newDirectoryHandle);
+      }
+      MakeFolder(AName);
+    };
+    this.DoCreateFile = function (AName, AProc) {
+      async function MakeFile(afolder,name) {
+        const newFileHandle = await afolder.getFileHandle(name, { create: true,} );
+        AProc(newFileHandle);
+      }
+      MakeFile(AName);
+    };
+    this.Create$2 = function (AFolderHandle) {
+      pas.System.TObject.Create.call(this);
+      this.FFolder = AFolderHandle;
+      return this;
+    };
+    this.Create$1 = function (AOwner) {
+      var fs = $mod.TFileSystemFileHandle.$new();
+      pas.System.TObject.Create.call(this);
+      this.FFolder = null;
+      if (1 < 0) {
+        this.DoGetFile(0,null);
+        this.DoListFile(0);
+        this.DoGetFolder($mod.TFileSystemFileHandle.$clone(fs));
+        this.DoOpenFolder(null);
+        this.DoGetFolderHandle(0,null);
+      };
+      if (1 < 0) this.DoGetFileHandle(null,null);
+      return this;
+    };
+    this.OpenFolder = function () {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.Open$1(function () {
+          ASuccess($Self.FFileArray);
+        });
+      });
+      return Result;
+    };
+    this.Open = function () {
+      this.Open$1(null);
+    };
+    this.Open$1 = function (AOpenFolder) {
+      var fs = $mod.TFileSystemFileHandle.$new();
+      if (this.FFolder == null) {
+        async function showdir(afolder, aproc) {
+                const dirHandle = await window.showDirectoryPicker();
+        
+                afolder.FFolder = dirHandle;
+        
+                for await (const entry of dirHandle.values()) {
+                  afolder.DoListFile(entry);
+                }
+                afolder.DoOpenFolder(aproc);
+               }
+               showdir(this, AOpenFolder);
+      } else {
+        async function showdirhandle(afolder, aproc) {
+        
+                const dirHandle = afolder.FFolder;
+        
+                for await (const entry of dirHandle.values()) {
+                  afolder.DoListFile(entry);
+                }
+                afolder.DoOpenFolder(aproc);
+               }
+               showdirhandle(this, AOpenFolder);
+      };
+      if (1 < 0) {
+        this.DoGetFile(null,null);
+        this.DoListFile(null);
+        this.DoGetFolder($mod.TFileSystemFileHandle.$clone(fs));
+        this.DoOpenFolder(null);
+        this.DoGetFolderHandle(null,null);
+      };
+    };
+    this.CreateFolder = function (AName) {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.DoCreateFolder(AName,function (AFolderHandle) {
+          ASuccess(AFolderHandle);
+        });
+      });
+      return Result;
+    };
+    this.CreateFile = function (AName) {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.DoCreateFile(AName,function (AFileHandle) {
+          ASuccess(AFileHandle);
+        });
+      });
+      return Result;
+    };
+    this.FileHandle = function (AName) {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.GetFileHandle(AName,function (AFileHandle) {
+          ASuccess(AFileHandle);
+        });
+      });
+      return Result;
+    };
+    this.FileObject = function (AName) {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.GetFile(AName,function (AFileObject) {
+          ASuccess($mod.TFileObject.$clone(AFileObject));
+        });
+      });
+      return Result;
+    };
+    this.Folder = function (AName) {
+      var $Self = this;
+      var Result = null;
+      Result = new Promise(function (ASuccess, AFailed) {
+        $Self.GetFolder(AName,function (AFolderHandle) {
+          ASuccess(AFolderHandle);
+        });
+      });
+      return Result;
+    };
+    this.GetFile = function (AName, GetFile) {
+      async function getfile(afolder, aname, aproc)
+      {
+        const newFileHandle = await afolder.FFolder.getFileHandle(aname, { create: false });
+        const file = await newFileHandle.getFile();
+        afolder.DoGetFile(file, aproc);
+      }
+      getfile(this, AName, GetFile);
+    };
+    this.GetFileHandle = function (AName, GetFile) {
+      async function getfilehandle(afolder, aname, aproc)
+      {
+        const newFileHandle = await afolder.FFolder.getFileHandle(aname, { create: false });
+        afolder.DoGetFileHandle(newFileHandle, aproc);
+      }
+      getfilehandle(this, AName, GetFile);
+    };
+    this.GetFolder = function (AName, GetFolder) {
+      async function getfolder(afolder, aname, aproc)
+      {
+        const newFolderHandle = await afolder.FFolder.getDirectoryHandle(aname, { create: false });
+        afolder.DoGetFolderHandle(newFolderHandle, aproc);
+      }
+      getfolder(this, AName, GetFolder);
+    };
+    rtl.addIntf(this,pas.System.IUnknown);
+    var $r = this.$rtti;
+    $r.addMethod("Create$2",2,[["AFolderHandle",rtl.jsvalue]]);
+    $r.addMethod("Create$1",2,[["AOwner",pas.Classes.$rtti["TComponent"]]]);
+    $r.addProperty("OnFolderOpen",0,pas.Classes.$rtti["TNotifyEvent"],"FOnFolderOpen","FOnFolderOpen");
+  });
+  rtl.createClass(this,"TLocalFolder",this.TFolder,function () {
+    rtl.addIntf(this,pas.System.IUnknown);
+  });
+  rtl.createClass(this,"TWebLocalFolder",this.TFolder,function () {
+    rtl.addIntf(this,pas.System.IUnknown);
+  });
+},["WEBLib.Utils"]);
+rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","WEBLib.Controls","WEBLib.Forms","WEBLib.Dialogs","WEBLib.StdCtrls","WEBLib.StdCtrls","WEBLib.Controls","WEBLib.LocalFiles","WEBLib.WebCtrls"],function () {
+  "use strict";
+  var $mod = this;
+  rtl.createClass(this,"TForm1",pas["WEBLib.Forms"].TForm,function () {
+    this.$init = function () {
+      pas["WEBLib.Forms"].TForm.$init.call(this);
+      this.WebMemoContent = null;
+      this.WebButton1 = null;
+      this.WebButton2 = null;
+      this.WebLocalTextFile1 = null;
+    };
+    this.$final = function () {
+      this.WebMemoContent = undefined;
+      this.WebButton1 = undefined;
+      this.WebButton2 = undefined;
+      this.WebLocalTextFile1 = undefined;
+      pas["WEBLib.Forms"].TForm.$final.call(this);
+    };
+    this.WebButton1Click = async function (Sender) {
+      this.WebLocalTextFile1.FText = this.WebMemoContent.GetText();
+      this.WebLocalTextFile1.SaveAs();
+      this.WebMemoContent.SetText("");
+    };
+    this.WebButton2Click = async function (Sender) {
+      this.WebMemoContent.FLines.SetTextStr(await this.WebLocalTextFile1.Open());
+    };
+    this.WebFilePicker1GetFileAsText = function (Sender, AFileIndex, AText) {
+      this.WebMemoContent.FLines.SetTextStr(AText);
+    };
+    this.LoadDFMValues = function () {
+      pas["WEBLib.Forms"].TCustomForm.LoadDFMValues.call(this);
+      this.WebMemoContent = pas["WEBLib.StdCtrls"].TMemo.$create("Create$1",[this]);
+      this.WebButton1 = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
+      this.WebButton2 = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
+      this.WebLocalTextFile1 = pas["WEBLib.LocalFiles"].TLocalTextFile.$create("Create$1",[this]);
+      this.WebMemoContent.BeforeLoadDFMValues();
+      this.WebButton1.BeforeLoadDFMValues();
+      this.WebButton2.BeforeLoadDFMValues();
+      this.WebLocalTextFile1.BeforeLoadDFMValues();
+      try {
+        this.SetName("Form1");
+        this.SetWidth(640);
+        this.SetHeight(480);
+        this.SetCSSLibrary(pas["WEBLib.Controls"].TCSSLibrary.cssBootstrap);
+        this.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.FFont.FCharset = 1;
+        this.FFont.SetColor(65793);
+        this.FFont.SetHeight(-15);
+        this.FFont.SetName("Tahoma");
+        this.FFont.SetStyle({});
+        this.SetParentFont(false);
+        this.WebMemoContent.SetParentComponent(this);
+        this.WebMemoContent.SetName("WebMemoContent");
+        this.WebMemoContent.SetLeft(16);
+        this.WebMemoContent.SetTop(56);
+        this.WebMemoContent.SetWidth(297);
+        this.WebMemoContent.SetHeight(121);
+        this.WebMemoContent.SetElementClassName("form-control");
+        this.WebMemoContent.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.WebMemoContent.SetHeightPercent(100.000000000000000000);
+        this.WebMemoContent.SetSelLength(0);
+        this.WebMemoContent.SetSelStart(0);
+        this.WebMemoContent.SetWidthPercent(100.000000000000000000);
+        this.WebButton1.SetParentComponent(this);
+        this.WebButton1.SetName("WebButton1");
+        this.WebButton1.SetLeft(16);
+        this.WebButton1.SetTop(192);
+        this.WebButton1.SetWidth(96);
+        this.WebButton1.SetHeight(25);
+        this.WebButton1.SetCaption("grabar");
+        this.WebButton1.SetChildOrderEx(1);
+        this.WebButton1.SetElementClassName("btn btn-light");
+        this.WebButton1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.WebButton1.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
+        this.WebButton1.SetHeightPercent(100.000000000000000000);
+        this.WebButton1.SetWidthPercent(100.000000000000000000);
+        this.SetEvent$1(this.WebButton1,this,"OnClick","WebButton1Click");
+        this.WebButton2.SetParentComponent(this);
+        this.WebButton2.SetName("WebButton2");
+        this.WebButton2.SetLeft(16);
+        this.WebButton2.SetTop(232);
+        this.WebButton2.SetWidth(96);
+        this.WebButton2.SetHeight(25);
+        this.WebButton2.SetCaption("abrir");
+        this.WebButton2.SetChildOrderEx(1);
+        this.WebButton2.SetElementClassName("btn btn-light");
+        this.WebButton2.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.WebButton2.SetHeightStyle(pas["WEBLib.Controls"].TSizeStyle.ssAuto);
+        this.WebButton2.SetHeightPercent(100.000000000000000000);
+        this.WebButton2.SetWidthPercent(100.000000000000000000);
+        this.SetEvent$1(this.WebButton2,this,"OnClick","WebButton2Click");
+        this.WebLocalTextFile1.SetParentComponent(this);
+        this.WebLocalTextFile1.SetName("WebLocalTextFile1");
+        this.WebLocalTextFile1.SetLeft(64);
+      } finally {
+        this.WebMemoContent.AfterLoadDFMValues();
+        this.WebButton1.AfterLoadDFMValues();
+        this.WebButton2.AfterLoadDFMValues();
+        this.WebLocalTextFile1.AfterLoadDFMValues();
+      };
+    };
+    rtl.addIntf(this,pas["WEBLib.Controls"].IControl);
+    rtl.addIntf(this,pas.System.IUnknown);
+    var $r = this.$rtti;
+    $r.addField("WebMemoContent",pas["WEBLib.StdCtrls"].$rtti["TMemo"]);
+    $r.addField("WebButton1",pas["WEBLib.StdCtrls"].$rtti["TButton"]);
+    $r.addField("WebButton2",pas["WEBLib.StdCtrls"].$rtti["TButton"]);
+    $r.addField("WebLocalTextFile1",pas["WEBLib.LocalFiles"].$rtti["TLocalTextFile"]);
+    $r.addMethod("WebButton1Click",0,[["Sender",pas.System.$rtti["TObject"]]],null,16,{attr: [pas.JS.AsyncAttribute,"Create"]});
+    $r.addMethod("WebButton2Click",0,[["Sender",pas.System.$rtti["TObject"]]],null,16,{attr: [pas.JS.AsyncAttribute,"Create"]});
+    $r.addMethod("WebFilePicker1GetFileAsText",0,[["Sender",pas.System.$rtti["TObject"]],["AFileIndex",rtl.longint],["AText",rtl.string]]);
+  });
+  this.Form1 = null;
+});
+rtl.module("program",["System","WEBLib.Forms","WEBLib.Forms","uFormaMenu","uLibretaResponsiveT","editorDiv","uRichEditor","uEditor","uLibretaResponsive","uLibretaResponsiveR","uSideMenu2","uSideMenu","uListaArchivos","uRichEditor2","uHojaTabular","uInicioMenu","uListaArchivosModal","uRichEditor3","uRichEditor5","uAyuda","uRichEditor4","Unit1"],function () {
   "use strict";
   var $mod = this;
   $mod.$implcode = function () {
@@ -90195,6 +91036,11 @@ rtl.module("program",["System","WEBLib.Forms","WEBLib.Forms","uFormaMenu","uLibr
     pas["WEBLib.Forms"].Application.FMainFormOnTaskBar = true;
     window.history.pushState(null, '', 'LibretaDigital.html#frmMenu');
     pas["WEBLib.Forms"].Application.FAutoFormRoute = true;
+    pas["WEBLib.Forms"].Application.CreateForm(pas.Unit1.TForm1,{p: pas.Unit1, get: function () {
+        return this.p.Form1;
+      }, set: function (v) {
+        this.p.Form1 = v;
+      }});
     pas["WEBLib.Forms"].Application.CreateForm(pas.uSideMenu2.TfrmSideMenu2,{p: pas.uSideMenu2, get: function () {
         return this.p.frmSideMenu2;
       }, set: function (v) {
