@@ -85907,6 +85907,7 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.Sumarimportes1 = null;
       this.Salir1 = null;
       this.lbid = null;
+      this.WebFilePicker1 = null;
       this.stextotabla = "";
       this.cambiosDatos = false;
     };
@@ -85933,6 +85934,7 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.Sumarimportes1 = undefined;
       this.Salir1 = undefined;
       this.lbid = undefined;
+      this.WebFilePicker1 = undefined;
       pas["WEBLib.Forms"].TForm.$final.call(this);
     };
     this.WebFormCreate = function (Sender) {
@@ -86042,7 +86044,7 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       
       var table = new Tabulator("#ttabulator", {
            maxHeight:"100%", //do not let table get bigger than the height of its parent element
-           frozenRows:1,
+           //frozenRows:1,
           //data:tabledata2,           //load row data from array
           spreadsheet:true,
         //spreadsheetData:sheetData,
@@ -86163,6 +86165,45 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
     };
     this.WebFormEnter = function (Sender) {
     };
+    this.Abrir1Click = function (Sender) {
+      this.WebFilePicker1.GetElementHandle().click();
+    };
+    this.WebFilePicker1Change = function (Sender) {
+      this.WebFilePicker1.FFiles.GetItem$1(0).GetFileAsText();
+    };
+    this.WebFilePicker1GetFileAsText = function (Sender, AFileIndex, AText) {
+      var EditorTexto = "";
+      EditorTexto = AText;
+      this.WebFilePicker1.SetVisible(false);
+      if (EditorTexto.length === 0) return;
+      var table = Tabulator.findTable("#ttabulator")[0];
+            // Forces a full re-render of the entire table, including all data
+            if (table)
+            {
+              //var htmlTableString = table.getHtml();
+              // var data = table.getData();
+              // console.log('tabultor',data);
+             //  var jsonString = JSON.stringify(data);
+             //  const len = jsonString.length;
+             //  if (len > 0)
+             //  {
+               //   alert('datos hoja tabular:'+EditorTexto);
+      
+               table.setData(EditorTexto);
+             //  }
+      
+             table.on("tableBuilt", function(){
+      
+         table.setLocale("espaniol"); //set locale to espaniol
+      
+      
+         // alert('table built');
+         // alert('EditorTexto');
+               table.setData(EditorTexto);
+             });
+      
+            };
+    };
     this.grabarTabular = function () {
       var table = Tabulator.findTable("#ttabulator")[0];
             // Forces a full re-render of the entire table, including all data
@@ -86186,6 +86227,16 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       var id = "";
       var grabar = 0;
       var HTabularTexto = "";
+      var nombreArchivo = "";
+      function downloadText(content, fileName) {
+          const blob = new Blob([content], { type: 'text/plain' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = fileName; // File will be downloaded with this name
+          a.click();
+          URL.revokeObjectURL(url); // Free up memory
+      };
       var table = Tabulator.findTable("#ttabulator")[0];
             // Forces a full re-render of the entire table, including all data
             if (table)
@@ -86229,15 +86280,19 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         } else {
           WIndexedDbClientLibreta.get().Append();
           id = pas.SysUtils.IntToStr(WIndexedDbClientLibreta.get().GetRecordCount() + 1);
+          nombreArchivo = "HojaTab-" + id;
           WIndexedDbClientLibreta.get().FieldByName("textoreg").SetAsString(HTabularTexto);
           WIndexedDbClientLibreta.get().FieldByName("tipo").SetAsString("2");
-          WIndexedDbClientLibreta.get().FieldByName("nombre").SetAsString("HojaTab-" + id);
+          WIndexedDbClientLibreta.get().FieldByName("nombre").SetAsString(nombreArchivo);
           WIndexedDbClientLibreta.get().FieldByName("fecha").SetAsString(pas.SysUtils.DateToStr(pas.SysUtils.Now()));
           WIndexedDbClientLibreta.get().Post();
           strListaArchivos.get().Add(WIndexedDbClientLibreta.get().FieldByName("nombre").GetAsString());
         };
         WIndexedDbClientLibreta.get().Close();
         WIndexedDbClientLibreta.get().SetActive(true);
+        if (confirm("Desa descargar en un archivo de texto ?")) {
+          downloadText(HTabularTexto, nombreArchivo);
+        };
       };
     };
     this.CargarHTabular = function (textotabla) {
@@ -86276,6 +86331,7 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.lbid = pas["WEBLib.StdCtrls"].TLabel.$create("Create$1",[this]);
       this.webBotonMenu = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
       this.WebSpeedButton1 = pas["WEBLib.Buttons"].TSpeedButton.$create("Create$1",[this]);
+      this.WebFilePicker1 = pas["WEBLib.Dialogs"].TFilePicker.$create("Create$1",[this]);
       this.WebHTMLDiv1 = pas["WEBLib.WebCtrls"].THTMLDiv.$create("Create$2",["ttabulator"]);
       this.WebPopupMenu1 = pas["WEBLib.Menus"].TPopupMenu.$create("Create$1",[this]);
       this.Cerrar1 = pas["WEBLib.Menus"].TMenuItem.$create("Create$1",[this]);
@@ -86298,6 +86354,7 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.lbid.BeforeLoadDFMValues();
       this.webBotonMenu.BeforeLoadDFMValues();
       this.WebSpeedButton1.BeforeLoadDFMValues();
+      this.WebFilePicker1.BeforeLoadDFMValues();
       this.WebHTMLDiv1.BeforeLoadDFMValues();
       this.WebPopupMenu1.BeforeLoadDFMValues();
       this.Cerrar1.BeforeLoadDFMValues();
@@ -86402,6 +86459,18 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.WebSpeedButton1.SetHeightPercent(100.000000000000000000);
         this.WebSpeedButton1.SetTabOrder(1);
         this.WebSpeedButton1.SetWidthPercent(100.000000000000000000);
+        this.WebFilePicker1.SetParentComponent(this.panelTabulatorTit);
+        this.WebFilePicker1.SetName("WebFilePicker1");
+        this.WebFilePicker1.SetLeft(376);
+        this.WebFilePicker1.SetTop(-8);
+        this.WebFilePicker1.SetWidth(129);
+        this.WebFilePicker1.SetHeight(49);
+        this.WebFilePicker1.SetAccept(".txt");
+        this.WebFilePicker1.SetChildOrderEx(1);
+        this.WebFilePicker1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.WebFilePicker1.SetVisible(false);
+        this.SetEvent$1(this.WebFilePicker1,this,"OnChange","WebFilePicker1Change");
+        this.SetEvent$1(this.WebFilePicker1,this,"OnGetFileAsText","WebFilePicker1GetFileAsText");
         this.WebHTMLDiv1.SetParentComponent(this.panelTabulator);
         this.WebHTMLDiv1.SetName("WebHTMLDiv1");
         this.WebHTMLDiv1.SetLeft(0);
@@ -86440,7 +86509,7 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.Abrir1.SetParentComponent(this.WebPopupMenu1);
         this.Abrir1.SetName("Abrir1");
         this.Abrir1.SetCaption("Abrir");
-        this.Abrir1.FVisible = false;
+        this.SetEvent$1(this.Abrir1,this,"OnClick","Abrir1Click");
         this.Guardar1.SetParentComponent(this.WebPopupMenu1);
         this.Guardar1.SetName("Guardar1");
         this.Guardar1.SetCaption("Guardar");
@@ -86484,6 +86553,7 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.lbid.AfterLoadDFMValues();
         this.webBotonMenu.AfterLoadDFMValues();
         this.WebSpeedButton1.AfterLoadDFMValues();
+        this.WebFilePicker1.AfterLoadDFMValues();
         this.WebHTMLDiv1.AfterLoadDFMValues();
         this.WebPopupMenu1.AfterLoadDFMValues();
         this.Cerrar1.AfterLoadDFMValues();
@@ -86528,11 +86598,15 @@ rtl.module("uHojaTabular",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
     $r.addField("Sumarimportes1",pas["WEBLib.Menus"].$rtti["TMenuItem"]);
     $r.addField("Salir1",pas["WEBLib.Menus"].$rtti["TMenuItem"]);
     $r.addField("lbid",pas["WEBLib.StdCtrls"].$rtti["TLabel"]);
+    $r.addField("WebFilePicker1",pas["WEBLib.Dialogs"].$rtti["TFilePicker"]);
     $r.addMethod("WebFormCreate",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("panelTabulatorTitClick",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("webBotonMenuClick",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("Salir1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebFormEnter",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("Abrir1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("WebFilePicker1Change",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("WebFilePicker1GetFileAsText",0,[["Sender",pas.System.$rtti["TObject"]],["AFileIndex",rtl.longint],["AText",rtl.string]]);
   });
   this.frmTabHoja = null;
 });
@@ -87520,6 +87594,7 @@ rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.WebHTMLDiv1 = null;
       this.divEditorQuill = null;
       this.divtoolbar = null;
+      this.WebFilePicker1 = null;
     };
     this.$final = function () {
       this.panelEditorTit = undefined;
@@ -87550,6 +87625,7 @@ rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.WebHTMLDiv1 = undefined;
       this.divEditorQuill = undefined;
       this.divtoolbar = undefined;
+      this.WebFilePicker1 = undefined;
       pas["WEBLib.Forms"].TForm.$final.call(this);
     };
     this.WebFormCreate = function (Sender) {
@@ -87624,6 +87700,32 @@ rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
     };
     this.webBotonMenuClick = function (Sender) {
       this.WebPopupMenu1.Popup(this.webBotonMenu.GetLeft() - 180,this.webBotonMenu.GetTop() + this.webBotonMenu.GetHeight());
+    };
+    this.Abrir1Click = function (Sender) {
+      this.WebFilePicker1.GetElementHandle().click();
+    };
+    this.WebFilePicker1Change = function (Sender) {
+      this.WebFilePicker1.FFiles.GetItem$1(0).GetFileAsText();
+    };
+    this.WebFilePicker1GetFileAsText = function (Sender, AFileIndex, AText) {
+      var EditorTexto = "";
+      EditorTexto = AText;
+      this.WebFilePicker1.SetVisible(false);
+      if (EditorTexto.length === 0) return;
+      // 1. Get the DOM element that contains the Quill editor
+      const editorContainer = document.getElementById('editor');
+      
+      // 2. Use Quill.find() to retrieve the instance
+      const quillInstance = Quill.find(editorContainer);
+      
+      // Now you can use the quillInstance API, e.g., to set contents
+      if (quillInstance) {
+      
+       //quillInstance.root.innerHTML="agregar contenido";
+       quillInstance.root.innerHTML = EditorTexto;
+      
+       ;
+      };
     };
     this.GrabarEditor = function (WIndexedDbClientLibreta, strListaArchivos) {
       var long = 0;
@@ -87786,6 +87888,7 @@ rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.webBotonMenu = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
       this.WebButton1 = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
       this.WebButton2 = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
+      this.WebFilePicker1 = pas["WEBLib.Dialogs"].TFilePicker.$create("Create$1",[this]);
       this.DivTop = pas["WEBLib.WebCtrls"].THTMLDiv.$create("Create$1",[this]);
       this.divtoolbar = pas["WEBLib.WebCtrls"].THTMLDiv.$create("Create$1",[this]);
       this.WebHTMLDiv1 = pas["WEBLib.WebCtrls"].THTMLDiv.$create("Create$1",[this]);
@@ -87814,6 +87917,7 @@ rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.webBotonMenu.BeforeLoadDFMValues();
       this.WebButton1.BeforeLoadDFMValues();
       this.WebButton2.BeforeLoadDFMValues();
+      this.WebFilePicker1.BeforeLoadDFMValues();
       this.DivTop.BeforeLoadDFMValues();
       this.divtoolbar.BeforeLoadDFMValues();
       this.WebHTMLDiv1.BeforeLoadDFMValues();
@@ -87968,6 +88072,18 @@ rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.WebButton2.SetVisible(false);
         this.WebButton2.SetWidthPercent(100.000000000000000000);
         this.SetEvent$1(this.WebButton2,this,"OnClick","WebButton2Click");
+        this.WebFilePicker1.SetParentComponent(this.panelEditorTit);
+        this.WebFilePicker1.SetName("WebFilePicker1");
+        this.WebFilePicker1.SetLeft(376);
+        this.WebFilePicker1.SetTop(-6);
+        this.WebFilePicker1.SetWidth(129);
+        this.WebFilePicker1.SetHeight(49);
+        this.WebFilePicker1.SetAccept(".txt");
+        this.WebFilePicker1.SetChildOrderEx(1);
+        this.WebFilePicker1.SetElementFont(pas["WEBLib.Controls"].TElementFont.efCSS);
+        this.WebFilePicker1.SetVisible(false);
+        this.SetEvent$1(this.WebFilePicker1,this,"OnChange","WebFilePicker1Change");
+        this.SetEvent$1(this.WebFilePicker1,this,"OnGetFileAsText","WebFilePicker1GetFileAsText");
         this.DivTop.SetParentComponent(this);
         this.DivTop.SetName("DivTop");
         this.DivTop.SetLeft(0);
@@ -88064,7 +88180,7 @@ rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.Abrir1.SetParentComponent(this.WebPopupMenu1);
         this.Abrir1.SetName("Abrir1");
         this.Abrir1.SetCaption("Abrir");
-        this.Abrir1.FVisible = false;
+        this.SetEvent$1(this.Abrir1,this,"OnClick","Abrir1Click");
         this.Guardar1.SetParentComponent(this.WebPopupMenu1);
         this.Guardar1.SetName("Guardar1");
         this.Guardar1.SetCaption("Guardar");
@@ -88110,6 +88226,7 @@ rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         this.webBotonMenu.AfterLoadDFMValues();
         this.WebButton1.AfterLoadDFMValues();
         this.WebButton2.AfterLoadDFMValues();
+        this.WebFilePicker1.AfterLoadDFMValues();
         this.DivTop.AfterLoadDFMValues();
         this.divtoolbar.AfterLoadDFMValues();
         this.WebHTMLDiv1.AfterLoadDFMValues();
@@ -88163,10 +88280,14 @@ rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
     $r.addField("WebHTMLDiv1",pas["WEBLib.WebCtrls"].$rtti["THTMLDiv"]);
     $r.addField("divEditorQuill",pas["WEBLib.WebCtrls"].$rtti["THTMLDiv"]);
     $r.addField("divtoolbar",pas["WEBLib.WebCtrls"].$rtti["THTMLDiv"]);
+    $r.addField("WebFilePicker1",pas["WEBLib.Dialogs"].$rtti["TFilePicker"]);
     $r.addMethod("WebFormCreate",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebButton1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("WebButton2Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
     $r.addMethod("webBotonMenuClick",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("Abrir1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("WebFilePicker1Change",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("WebFilePicker1GetFileAsText",0,[["Sender",pas.System.$rtti["TObject"]],["AFileIndex",rtl.longint],["AText",rtl.string]]);
   });
 });
 rtl.module("uAyuda",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","WEBLib.Controls","WEBLib.Forms","WEBLib.Dialogs","WEBLib.ExtCtrls","WEBLib.Controls","WEBLib.WebCtrls","WEBLib.Buttons","WEBLib.StdCtrls","WEBLib.StdCtrls"],function () {
