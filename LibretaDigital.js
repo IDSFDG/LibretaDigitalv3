@@ -86888,6 +86888,16 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       var id = "";
       var grabar = 0;
       var EditorTexto = "";
+      var nombreArchivo = "";
+      function downloadText(content, fileName) {
+          const blob = new Blob([content], { type: 'text/plain' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = fileName; // File will be downloaded with this name
+          a.click();
+          URL.revokeObjectURL(url); // Free up memory
+      };
       // 1. Get the DOM element that contains the Quill editor
       const editorContainer = document.getElementById('editor');
       
@@ -86923,6 +86933,7 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
             grabar=0;
         };
         if (grabar < 1) return;
+        nombreArchivo = "";
         id = this.lbid.FCaption;
         if (WIndexedDbClientLibreta.get().Locate("id",id,{})) {
           WIndexedDbClientLibreta.get().Edit();
@@ -86931,15 +86942,19 @@ rtl.module("uRichEditor4",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
         } else {
           WIndexedDbClientLibreta.get().Append();
           id = pas.SysUtils.IntToStr(WIndexedDbClientLibreta.get().GetRecordCount() + 1);
+          nombreArchivo = "Nota-" + id;
           WIndexedDbClientLibreta.get().FieldByName("textoreg").SetAsString(EditorTexto);
           WIndexedDbClientLibreta.get().FieldByName("tipo").SetAsString("1");
-          WIndexedDbClientLibreta.get().FieldByName("nombre").SetAsString("Nota-" + id);
+          WIndexedDbClientLibreta.get().FieldByName("nombre").SetAsString(nombreArchivo);
           WIndexedDbClientLibreta.get().FieldByName("fecha").SetAsString(pas.SysUtils.DateToStr(pas.SysUtils.Now()));
           WIndexedDbClientLibreta.get().Post();
           strListaArchivos.get().Add(WIndexedDbClientLibreta.get().FieldByName("nombre").GetAsString());
         };
         WIndexedDbClientLibreta.get().Close();
         WIndexedDbClientLibreta.get().SetActive(true);
+        if (confirm("Desa descargar en un archivo de texto ?")) {
+        downloadText(EditorTexto, nombreArchivo);
+           };
       };
     };
     this.CargarEditor = function (textoeditor) {
@@ -87611,6 +87626,81 @@ rtl.module("uRichEditor5",["System","SysUtils","Classes","JS","Web","WEBLib.Grap
       this.WebPopupMenu1.Popup(this.webBotonMenu.GetLeft() - 180,this.webBotonMenu.GetTop() + this.webBotonMenu.GetHeight());
     };
     this.GrabarEditor = function (WIndexedDbClientLibreta, strListaArchivos) {
+      var long = 0;
+      var mr = 0;
+      var id = "";
+      var grabar = 0;
+      var EditorTexto = "";
+      var nombreArchivo = "";
+      function downloadText(content, fileName) {
+          const blob = new Blob([content], { type: 'text/plain' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = fileName; // File will be downloaded with this name
+          a.click();
+          URL.revokeObjectURL(url); // Free up memory
+      };
+      // 1. Get the DOM element that contains the Quill editor
+      const editorContainer = document.getElementById('editor');
+      
+      // 2. Use Quill.find() to retrieve the instance
+      const quillInstance = Quill.find(editorContainer);
+      
+      // Now you can use the quillInstance API, e.g., to get contents
+      if (quillInstance) {
+          const delta = quillInstance.getContents();
+          console.log(delta);
+      
+      
+      
+      // Get content as an HTML string
+      const htmlContent = quillInstance.root.innerHTML;
+      console.log('HTML content:', htmlContent);
+            long = htmlContent.length;
+      
+            var textLength = quillInstance.getLength() - 1;
+            long=textLength;
+            EditorTexto= htmlContent;
+      };
+      grabar = -1;
+      if (long > 0) {
+        if (confirm("Desa registrar sus cambios?")) {
+           // Code to run if the user clicked "OK" (Yes)
+            console.log("Deletion confirmed, proceeding with the action.");
+            // Example: call a function to delete the record
+            grabar=1;
+         } else {
+          // Code to run if the user clicked "Cancel" (No)
+          console.log("Deletion cancelled.");
+            grabar=0;
+        };
+        if (grabar < 1) return;
+        nombreArchivo = "";
+        id = this.lbid.FCaption;
+        if (WIndexedDbClientLibreta.get().Locate("id",id,{})) {
+          WIndexedDbClientLibreta.get().Edit();
+          WIndexedDbClientLibreta.get().FieldByName("textoreg").SetAsString(EditorTexto);
+          WIndexedDbClientLibreta.get().Post();
+        } else {
+          WIndexedDbClientLibreta.get().Append();
+          id = pas.SysUtils.IntToStr(WIndexedDbClientLibreta.get().GetRecordCount() + 1);
+          nombreArchivo = "Texto-" + id;
+          WIndexedDbClientLibreta.get().FieldByName("textoreg").SetAsString(EditorTexto);
+          WIndexedDbClientLibreta.get().FieldByName("tipo").SetAsString("1");
+          WIndexedDbClientLibreta.get().FieldByName("nombre").SetAsString(nombreArchivo);
+          WIndexedDbClientLibreta.get().FieldByName("fecha").SetAsString(pas.SysUtils.DateToStr(pas.SysUtils.Now()));
+          WIndexedDbClientLibreta.get().Post();
+          strListaArchivos.get().Add(WIndexedDbClientLibreta.get().FieldByName("nombre").GetAsString());
+        };
+        WIndexedDbClientLibreta.get().Close();
+        WIndexedDbClientLibreta.get().SetActive(true);
+        if (confirm("Desa descargar en un archivo de texto ?")) {
+        downloadText(EditorTexto, nombreArchivo);
+           };
+      };
+    };
+    this.GrabarEditor_ant = function (WIndexedDbClientLibreta, strListaArchivos) {
       var long = 0;
       var mr = 0;
       var id = "";
@@ -88344,7 +88434,6 @@ rtl.module("uSideMenu2",["System","SysUtils","Classes","JS","Web","WEBLib.Graphi
           }, set: function (v) {
             this.p.strListaArchivos = v;
           }});
-        $impl.newform2.DescargarTextoEditor();
         $impl.newform2 = null;
       };
       if ($impl.newForm3 != null) {
