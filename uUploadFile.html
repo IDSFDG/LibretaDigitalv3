@@ -1,0 +1,289 @@
+﻿<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>TMS Web Project</title>
+    <style>
+        <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --accent: #555;
+        --bg: #f8f8f8;
+        --card: #fff;
+        --border: #ccc;
+        --radius: 0;
+        --font: "Courier New", Courier, monospace;
+      }
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        background-image: radial-gradient(circle, #ddd 1px, transparent 1px);
+        background-size: 20px 20px;
+        color: #333;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .container {
+        width: 100%;
+        max-width: 600px;
+        padding: 20px;
+      }
+      h1 {
+        font-size: 1.5rem;
+        text-align: center;
+        margin-bottom: 6px;
+        color: #222;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+      .subtitle {
+        text-align: center;
+        color: #999;
+        font-size: 0.85rem;
+        margin-bottom: 28px;
+      }
+
+      .hidden {
+        display: none;
+      }
+      .hidden.show {
+        display: block;
+      }
+      .hidden.show-flex {
+        display: flex;
+      }
+
+      .drop-zone {
+        border: 2px dashed var(--border);
+        padding: 48px 24px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.25s;
+        background: var(--card);
+      }
+      .drop-zone:hover,
+      .drop-zone.dragover {
+        border-color: #666;
+        background: #f0f0f0;
+      }
+      .drop-zone input {
+        display: none;
+      }
+      .drop-icon {
+        font-size: 2.5rem;
+        margin-bottom: 12px;
+      }
+      .drop-text {
+        color: #888;
+      }
+      .drop-text span {
+        color: #333;
+        text-decoration: underline;
+      }
+
+      .file-preview {
+        background: var(--card);
+        border: 1px dashed var(--border);
+        padding: 16px;
+        margin-top: 16px;
+        gap: 12px;
+        align-items: center;
+      }
+      .file-icon {
+        font-size: 1.8rem;
+        flex-shrink: 0;
+      }
+      .file-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .file-name {
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .file-size {
+        color: #999;
+        font-size: 0.78rem;
+        margin-top: 2px;
+      }
+      .file-remove {
+        background: none;
+        border: none;
+        color: #aaa;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 4px 8px;
+      }
+      .file-remove:hover {
+        color: #c00;
+      }
+
+      .upload-btn {
+        width: 100%;
+        margin-top: 16px;
+        padding: 14px;
+        border: 2px dashed #888;
+        background: #fff;
+        color: #333;
+        font-family: var(--font);
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.2s;
+      }
+      .upload-btn:hover {
+        background: #333;
+        color: #fff;
+        border-color: #333;
+      }
+      .upload-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .progress-bar {
+        margin-top: 16px;
+        height: 6px;
+        background: #e0e0e0;
+        border: 1px dashed var(--border);
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        width: 0%;
+        background: #888;
+        transition: width 0.3s;
+      }
+
+      .result {
+        margin-top: 20px;
+        background: var(--card);
+        border: 1px dashed #999;
+        padding: 16px;
+      }
+      .result-label {
+        color: #333;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .result-url-row {
+        display: flex;
+        gap: 8px;
+      }
+      .result-url {
+        flex: 1;
+        background: var(--bg);
+        border: 1px dashed var(--border);
+        padding: 10px 12px;
+        color: #333;
+        font-family: var(--font);
+        font-size: 0.85rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .copy-btn {
+        background: #fff;
+        border: 1px dashed var(--border);
+        color: #555;
+        padding: 10px 14px;
+        cursor: pointer;
+        font-family: var(--font);
+        font-size: 0.85rem;
+        white-space: nowrap;
+      }
+      .copy-btn:hover {
+        background: #333;
+        color: #fff;
+        border-color: #333;
+      }
+      .visit-link {
+        display: inline-block;
+        margin-top: 10px;
+        color: #555;
+        font-size: 0.82rem;
+        text-decoration: none;
+      }
+      .visit-link:hover {
+        text-decoration: underline;
+      }
+
+      .error {
+        margin-top: 16px;
+        background: #fff;
+        border: 1px dashed #c00;
+        padding: 14px;
+        color: #c00;
+        font-size: 0.85rem;
+      }
+      .status {
+        text-align: center;
+        margin-top: 12px;
+        color: #999;
+        font-size: 0.82rem;
+      }
+    </style>
+  </head>
+  <body>
+  <div class="container">
+      <h1>subir & compartir</h1>
+      <p class="subtitle">
+        Upload a file to Puter and get a public URL instantly
+        Subir un archivo y obtener una URL instantanemante
+      </p>
+
+      <div  class="drop-zone" id="dropZone">
+        <input type="file" id="fileInput" />
+        <div class="drop-icon">📁</div>
+        <div  class="drop-text">
+          Drag & drop a file here or <span>browse</span>
+        </div>
+      </div>
+
+      <div class="file-preview hidden" id="filePreview">
+        <div class="file-icon" id="fileIcon">📄</div>
+        <div class="file-info">
+          <div class="file-name" id="fileName"></div>
+          <div class="file-size" id="fileSize"></div>
+        </div>
+        <button class="file-remove" id="fileRemove" title="Remove">✕</button>
+      </div>
+
+      <button class="upload-btn hidden" id="uploadBtn">
+        Upload & Generate Link
+      </button>
+
+      <div class="progress-bar hidden" id="progressBar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="status hidden" id="status"></div>
+
+      <div class="result hidden" id="result">
+        <div class="result-label">✓ Public URL</div>
+        <div class="result-url-row">
+          <div class="result-url" id="resultUrl"></div>
+          <button class="copy-btn" id="copyBtn">Copy</button>
+        </div>
+        <a class="visit-link" id="visitLink" href="#" target="_blank"
+          >Open in new tab ↗</a
+        >
+      </div>
+
+      <div class="error hidden" id="error"></div>
+
+    </div>
+
+  </body>
+</html>
