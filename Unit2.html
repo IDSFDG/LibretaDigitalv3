@@ -1,4 +1,4 @@
-﻿<html>
+<html>
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <title>TMS Web Project</title>
@@ -6,5 +6,18 @@
     </style>
   </head>
   <body>
-  </body>
+    <script src="https://js.puter.com/v2/"></script>
+    <script>
+        (async () => {
+           //  // (1) Create a random file
+            let filename = 'archivos_URL.txt';
+             await puter.fs.write(filename, 'Hello, world!');
+             document.write('File created successfully<br>');
+
+            // (2) Delete the file
+            await puter.fs.delete(filename);
+            document.write('File deleted successfully');
+        })();
+    </script>
+</body>
 </html>
